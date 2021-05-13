@@ -1,8 +1,15 @@
 import './App.css';
 
+function signIn(){
+fetch('http://localhost:4444/api/auth',{method:'get',mode:'cors'}).then(val=>{
+  console.log(val)
+})
+}
 function App() {
   return (
-    <div>BUZZZ</div>
+    <div>
+      <button onClick={signIn}>Google Sign-In</button>
+    </div>
   );
 }
 
