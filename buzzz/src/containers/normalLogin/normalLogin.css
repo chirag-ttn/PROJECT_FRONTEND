@@ -1,0 +1,26 @@
+.out-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70vh;
+    width: 50%;
+    align-items: center;
+}
+.text{
+    font-size: x-small;
+}
+#btn-signIn{
+    text-decoration: none;
+    border-radius: 25px;
+    background-color: #9E79F2;
+    color: white;
+    border:1px solid #9E79F2;
+    padding: 10px;
+    
+}
+#btn-signIn:hover{
+    color:#9E79F2;
+    background-color: white;
+
+
+}
