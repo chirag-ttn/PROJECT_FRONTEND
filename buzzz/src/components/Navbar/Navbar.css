@@ -1,0 +1,16 @@
+.right-links{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 20%;
+
+}
+.right-links p{
+    margin: 0;
+}
+.user-profile-pic{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
