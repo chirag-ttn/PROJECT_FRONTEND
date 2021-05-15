@@ -6,19 +6,19 @@
     text-align: center;
     height:70vh;
     border: none  !important;
-    border-right: 1px solid beige !important;
+    border-right:3px solid beige !important;
     border-radius: 0 !important;
 }
 
 
 #btn-google{
     text-decoration: none;
-    border:1px solid #EB72A8;
+    border:1px solid #9E79F2;
     padding: 10px;
-    color:#EB72A8;
+    color:#9E79F2;
     border-radius: 25px;
 }
 #btn-google:hover{
     color: white;
-    background-color: #EB72A8;
+    background-color: #9E79F2;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './googleLogin.css'
+import {Link} from 'react-router-dom'
 import image from '../../images/TO-THE-NEW-logo.jpg'
 function googleLogin() {
     return (
