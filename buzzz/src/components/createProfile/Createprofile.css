@@ -1,0 +1,24 @@
+.profile{
+    width: 200px;
+    height: 200px;
+    background-image: url('../../images//TTN.jpg');
+    background-size: cover;
+    position:absolute;
+    z-index: 1;
+    top:110px;
+    left:40%;
+    border-radius: 50%;
+}
+.profile .icon{
+    position: absolute;
+    color:red;
+    right:10px;
+    bottom:10px;
+    font-size: 30px;
+}
+.cover{
+    background-image: url('../../images/cover.jpg');
+    background-size: cover;
+    height: 300px;
+    width: 100%;
+}
