@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import {useDispatch} from 'react-redux'
+import * as actions from '../../actions/auth/auth'
 import logo from '../../images/TTN.jpg'
+
 import './Navbar.css'
 function Navbar() {
+    useEffect(()=>{
 
+    })
+    const dispatch = useDispatch()
     return (
         <>
             <div class="container-fluid p-0">
@@ -18,6 +24,7 @@ function Navbar() {
 
                             <i className="fab fa-facebook-messenger" />
                             <i className="far fa-bell" />
+                            <button onClick={()=>dispatch(actions.removeToken())}>Logout</button>
                         </div>
                     </div>
                 </nav>

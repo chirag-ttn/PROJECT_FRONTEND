@@ -4,6 +4,7 @@ import Feeds from './pages/Feeds/Feeds'
 import CreateProfile from './pages/CreateProfile/CreateProfile'
 import { BrowserRouter as Router, Redirect, Link, Switch, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import {useSelector,useDispatch} from 'react-redux'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 
@@ -19,12 +20,10 @@ axios.interceptors.request.use(config => {
 
 
 function App() {
-  const [loggedIn, setloggedIn] = useState(false)
-  useEffect(()=>{
-    const val = localStorage.getItem('token')
-    console.log(val,loggedIn)
-    val?setloggedIn(true):setloggedIn(false)
-  })
+  // const [loggedIn, setloggedIn] = useState(false)
+  
+  const isAuth = useSelector(state=>state.auth)
+  
   const ProtectedRoutes = (<>
     <Switch>
       <Route path="/feeds">
@@ -34,19 +33,21 @@ function App() {
         <CreateProfile />
       </Route>
       <Route exact path='/'>
-        {loggedIn?<Redirect to='/createProfile' />:<Login /> }
+        {isAuth?<Redirect to='/createProfile' />:<Login /> }
       </Route>
     </Switch>
   </>)
   const unProtectedRoutes = (
     <>
-    <Route exact path="/">
-       <Login />
+
+    <Route path="*">
+      <Login />
       </Route>
     </>
   )
   return (
-    loggedIn?ProtectedRoutes:unProtectedRoutes
+    isAuth?ProtectedRoutes:unProtectedRoutes
+    
 
   );
 }
