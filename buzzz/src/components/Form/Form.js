@@ -11,7 +11,8 @@ let ContactForm = props => {
         const valid = handleValidation()
         if (valid) {
             props.onSubmit(formState)
-            dispatch(resetFormHandler)
+            dispatch(resetFormHandler())
+    
             alert("Form submitted");
         }
     }
