@@ -1,23 +1,27 @@
+.imageWrapper{
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    top:100px;
+    left:40%;
+    z-index: 1;
+}
 .profile{
     width: 200px;
     height: 200px;
-    background-image: url('../../images//TTN.jpg');
     background-size: cover;
     position:absolute;
     z-index: 1;
-    top:110px;
-    left:40%;
     border-radius: 50%;
 }
-.profile .icon{
+.icon{
     background-color:gray;
     border-radius: 50%;
     padding:5px;
     position: absolute;
     color:black;
-    right:10px;
-    bottom:10px;
     font-size: 20px;
+    z-index: 1;
 }
 .cover{
     position: relative;

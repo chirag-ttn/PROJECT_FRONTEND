@@ -2,15 +2,13 @@ import React from 'react';
 import GoogleLogin from '../../components/googleLogin/googleLogin'
 import NormalLogin from '../../components/normalLogin/normalLogin'
 import {useEffect} from 'react'
-import {setToken} from '../../actions/auth/auth'
+import {setToken} from '../../actions/auth'
 import {useSelector,useDispatch} from 'react-redux'
-import Cookies from 'js-cookie'
 import './login.css'
 
 function Login() {
-    const auth = useSelector(state=>state)
+    
     const dispatch = useDispatch()
-    console.log(auth)
     useEffect(()=>{
         dispatch(setToken())
     },[setToken])

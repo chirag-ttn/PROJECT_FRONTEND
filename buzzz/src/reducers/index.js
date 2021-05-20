@@ -1,6 +1,11 @@
 import {combineReducers} from 'redux'
 import authReducer from './auth'
-
-export default combineReducers({
-    auth:authReducer
+import formReducer from './ProfileForm'
+import errorReducer from './error'
+const rootReducer =  combineReducers({
+    authReducer,
+    formReducer,
+    errorReducer
 })
+
+export default rootReducer

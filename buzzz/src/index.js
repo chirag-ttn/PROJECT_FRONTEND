@@ -2,18 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux"
-import reducers from './reducers/index'
+
+import { createStore, applyMiddleware, compose,combineReducers } from "redux"
 import authReducer from './reducers/auth'
+import {reducer as formReducer} from 'redux-form'
 import thunk from 'redux-thunk'
+import reducers from './reducers/index'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './icons/all'
 
+
+
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(authReducer, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 
 ReactDOM.render(

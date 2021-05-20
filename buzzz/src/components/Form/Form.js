@@ -1,94 +1,70 @@
-import { useEffect, useState } from 'react'
-
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import {resetFormHandler, OnChangeHandler} from '../../actions/ProfileForm'
+import {setFormError} from '../../actions/error'
 let ContactForm = props => {
-    const initialState = {
-        firstname: '',
-        lastname: '',
-        designation: 'co-founder',
-        website: '',
-        gender: 'male',
-        dob: '',
-        city: '',
-        state: 'haryana',
-        zip: ''
-    }
-    const [formState, setformState] = useState(initialState)
-    const [error, setError] = useState({
-        firstname: '',
-        lastname: '',
-        website: '',
-        city: '',
-        zip: '',
-        alert:''
-    })
 
+    const dispatch = useDispatch()
+    const formState = useSelector(state => state.formReducer)
+    const error = useSelector(state=>state.errorReducer)
     const submitForm = (e) => {
         e.preventDefault()
-        if (handleValidation()) {
+        const valid = handleValidation()
+        if (valid) {
             props.onSubmit(formState)
+            dispatch(resetFormHandler)
             alert("Form submitted");
-            setformState(initialState)
-        } else {
-            console.log(error)
-            alert(error.alert)
         }
     }
     const handleChange = (e) => {
-        console.log(e.target.value)
-        const form = { ...formState }
-        const { name, value } = e.target
-        form[name] = value
-        setformState(form)
+        dispatch(OnChangeHandler(e.target))
     }
     const handleValidation = () => {
-        console.log('inside')
         let fields = formState;
         let errors = {};
         let formIsValid = true;
 
         //firstname lastname city 
-        if (!fields.firstname || !fields.lastname || !fields.city || !fields.zip || !fields.website|| !fields.designation|| !fields.gender || !fields.state) {
+        if (!fields.firstname || !fields.lastname || !fields.city || !fields.zip || !fields.website || !fields.designation || !fields.gender || !fields.state) {
             formIsValid = false;
             errors.alert = "Please fill all the values";
-            setError(errors)
+            // setError(errors)
         }
         if (typeof fields.firstname !== "undefined") {
             if (!fields.firstname.match(/^[a-zA-Z]+$/)) {
                 formIsValid = false;
                 errors.firstname = "Only letters";
             }
-            setError(errors)
+            // setError(errors)
         }
         if (typeof fields.lastname !== "undefined") {
             if (!fields.lastname.match(/^[a-zA-Z]+$/)) {
                 formIsValid = false;
                 errors.lastname = "Only letters";
             }
-            setError(errors)
+            // setError(errors)
         }
         if (typeof fields.city !== "undefined") {
             if (!fields.city.match(/^[a-zA-Z]+$/)) {
                 formIsValid = false;
                 errors.city = "Only letters";
             }
-            setError(errors)
+            // setError(errors)
         }
         if (typeof fields.zip !== "undefined") {
             if (!fields.zip.match(/^[0-9]+$/)) {
                 formIsValid = false;
                 errors.zip = "Only Numbers";
             }
-            setError(errors)
+            // setError(errors)
         }
         if (typeof fields.website !== "undefined") {
             if (!fields.website.match(/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/)) {
                 formIsValid = false;
                 errors.website = "Please enter a valid url";
             }
-            setError(errors)
+            // setError(errors)
         }
+        dispatch(setFormError(errors))
         return formIsValid
         //website 
     }
@@ -119,8 +95,8 @@ let ContactForm = props => {
                         id="lastname"
                         onChange={handleChange}
                         placeholder="Last Name" />
-                </div>
                 <span style={{ color: "red" }}>{error.lastname}</span>
+                </div>
 
             </div>
             <div class="form-row">
@@ -205,9 +181,7 @@ let ContactForm = props => {
             </div>
             <div className="form col-md-8 d-flex justify-content-around">
                 <button type="submit" class="btn btn-primary form-group col-md-3">Save</button>
-                <button type="button"onClick={()=>{
-                    setformState(initialState)
-                }} class="btn btn-outline-primary form-group col-md-3">Reset All</button>
+                <button type="button" onClick={()=>dispatch(resetFormHandler())} class="btn btn-outline-primary form-group col-md-3">Reset All</button>
             </div>
         </form>
     )

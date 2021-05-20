@@ -1,6 +1,9 @@
 import Cookie from 'js-cookie'
+import axios from 'axios'
+import Api from '../Api/localhost'
+
 export const setToken = () => {
-    let auth = false
+    let auth = false;
     if (localStorage.getItem('token') === '' || localStorage.getItem('token') === null) {
         if(Cookie.get('token')!==undefined)
         {
@@ -8,6 +11,10 @@ export const setToken = () => {
             localStorage.setItem('token',Cookie.get('token'))
             Cookie.remove('token')
         }
+
+    }
+    else{
+        auth=true
     }
     return {
         type: 'SET_TOKEN',
@@ -21,5 +28,12 @@ export const removeToken = ()=>{
         type:'REMOVE_TOKEN',
         token:null,
         auth:false
+    }
+}
+export const getUser = (dispatch)=>{
+    return async ()=>{
+        // console.log('HWE',localStorage.getItem('token'))
+        const response = await axios.get('/api/secure/getUserData')
+        dispatch({type:'GET_USER',payload:response.data})
     }
 }
