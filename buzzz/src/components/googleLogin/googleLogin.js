@@ -4,13 +4,13 @@ import image from '../../images/TTN.jpg'
 function googleLogin() {
     return (
         <>
-            <div class="card _card">
-                <div class="text-center">
-                    <img src={image} style={{ width: 30 + "%" }} class="" alt="..." />
+            <div className="card _card">
+                <div className="text-center">
+                    <img src={image} style={{ width: 30 + "%" }} className="" alt="..." />
                 </div>
-                <div class="card-body d-flex flex-column justify-content-center">
-                    <h4 class="card-title text-dark">Enter your details and Start your journey with us.</h4>
-                    <h6 class="card-subtitle mb-2 text-muted">Don't stop until you're proud.</h6>
+                <div className="card-body d-flex flex-column justify-content-center">
+                    <h4 className="card-title text-dark">Enter your details and Start your journey with us.</h4>
+                    <h6 className="card-subtitle mb-2 text-muted">Don't stop until you're proud.</h6>
                 </div>
 
 

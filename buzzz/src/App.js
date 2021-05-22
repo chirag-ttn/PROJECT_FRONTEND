@@ -26,11 +26,11 @@ function App() {
   // console.log(isAuth)
   const ProtectedRoutes = (<>
     <Switch>
-      <Route path="/feeds">
-        <Feeds />
-      </Route>
       <Route path='/createProfile'>
         <CreateProfile />
+      </Route>
+      <Route path="/feeds">
+        <Feeds />
       </Route>
       <Route exact path='/'>
         {isAuth ? <Redirect to='/createProfile' /> : <Login />}

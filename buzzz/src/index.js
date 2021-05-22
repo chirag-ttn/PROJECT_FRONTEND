@@ -7,8 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from "react-redux";
 
 import { createStore, applyMiddleware, compose,combineReducers } from "redux"
-import authReducer from './reducers/auth'
-import {reducer as formReducer} from 'redux-form'
 import thunk from 'redux-thunk'
 import reducers from './reducers/index'
 import './index.css';

@@ -1,5 +1,18 @@
-.suggestions{
-    width: 20%;
+.section-suggestion{
+    width: 100%;
     background-color: white;
-    height: 80%;
+    height: 60%;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+.section-suggestion::-webkit-scrollbar{
+    display: none;
+}
+input{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    color: black;
 }

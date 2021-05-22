@@ -32,7 +32,6 @@ export const removeToken = ()=>{
 }
 export const getUser = (dispatch)=>{
     return async ()=>{
-        // console.log('HWE',localStorage.getItem('token'))
         const response = await axios.get('/api/secure/getUserData')
         dispatch({type:'GET_USER',payload:response.data})
     }
