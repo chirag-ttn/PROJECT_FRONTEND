@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleLogin from '../../components/googleLogin/googleLogin'
 import NormalLogin from '../../components/normalLogin/normalLogin'
 import {useEffect} from 'react'
-import {setToken} from '../../actions/auth'
+import {setToken} from '../../redux/actions/auth'
 import {useSelector,useDispatch} from 'react-redux'
 import './login.css'
 
@@ -14,7 +14,7 @@ function Login() {
     },[setToken])
     return (
         <>
-            <div className="container">
+            <div class="container">
 
                 <GoogleLogin />
                 <NormalLogin />

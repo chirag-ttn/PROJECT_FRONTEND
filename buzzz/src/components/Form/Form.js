@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {resetFormHandler, OnChangeHandler} from '../../actions/ProfileForm'
-import {setFormError} from '../../actions/error'
+import {resetFormHandler, OnChangeHandler} from '../../redux/actions/ProfileForm'
+import {setFormError} from '../../redux/actions/error'
 let ContactForm = props => {
 
     const dispatch = useDispatch()

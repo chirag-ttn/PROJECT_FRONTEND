@@ -5,6 +5,7 @@
     margin-top: 10px;
     border-radius: 10px;
     overflow-y: scroll;
+    margin:10px 10px;
 }
 .section-suggestion::-webkit-scrollbar{
     display: none;

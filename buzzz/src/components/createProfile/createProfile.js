@@ -3,22 +3,22 @@ import {useDispatch,useSelector} from 'react-redux'
 import Form from '../Form/Form'
 import axios from 'axios'
 import './Createprofile.css'
-import {getUser} from '../../actions/auth'
-import { Redirect } from 'react-router'
+import {getUser} from '../../redux/actions/auth'
 const submit = values => {
+    
     axios({
         method: "post",
-        url: "http://localhost:4444/api/createProfile/",
+        url: "http://localhost:4444/profile/createProfile",
         data: JSON.stringify(values),
         headers: { "Content-Type": 'application/json' },
     })
     .then(function (response) {
-        //handle success
-        //show feeds page
+        console.log(response)
+        alert('Form Submitted')
     })
     .catch(function (response) {
-        //handle error
-        // show error modal
+        console.log(response)
+        alert('Error')
     });
 }
 function Profile() {
@@ -28,24 +28,23 @@ function Profile() {
     },[])
     
     const state = useSelector(state=>state.authReducer)
-    console.log(state)
 
     
     return (
-        <div className="form-container container-fluid p-0">
+        <div class="form-container container-fluid p-0">
 
-            <div className="row cover-img">
-                <img className="cover" />
-                <button type="button" className="btn btn-light cover-btn">
-                    <i className="fas fa-camera"></i>
+            <div class="row cover-img">
+                <img class="cover" />
+                <button type="button" class="btn btn-light cover-btn">
+                    <i class="fas fa-camera"></i>
                     Edit Cover Photo
                 </button>
 
             </div>
-            <div className="imageWrapper">
-                <img className="profile" src={state.profile_pic} />
-                <button type="button" className="btn btn-light cover-btn icon">
-                    <i className="fas fa-camera"></i>
+            <div class="imageWrapper">
+                <img class="profile" src={state.profile_pic} />
+                <button type="button" class="btn btn-light cover-btn icon">
+                    <i class="fas fa-camera"></i>
                 </button>
             </div>
             <Form onSubmit={submit} />

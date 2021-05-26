@@ -1,29 +1,51 @@
 import Navbar from '../../components/Navbar/Navbar'
 import './CreateProfile.css'
 import Createprofile from '../../components/createProfile/createProfile'
-import Suggestion from '../../components/Suggestions/suggestions'
-
+import Suggestions from '../../components/Suggestions/suggestions'
+import Loading from '../../components/Loading/Loading'
+import {useSelector} from 'react-redux'
+import {useEffect} from 'react'
 function CreateProfile() {
+
+    const state = useSelector(state => state.profileReducer)
     
+    const current_user_profile = state.profile
+
+    const suggestions = current_user_profile.suggestions
+    const friends = current_user_profile.friends
+    let loading = state.getProfileLoading;
+    // useEffect(() => {
+    // }, [profile])
+
+    console.log("CREATE",loading)
+    let Sidebar =
+        (<>
+            <div className="row">
+                <Suggestions heading={"Suggestions"} suggestions={suggestions} id={current_user_profile._id} />
+            </div>
+            <div className="row">
+                <Suggestions heading={"Friends"} suggestions={friends} id={current_user_profile._id} />
+            </div>
+            </>)
     return (
         <>
-            <div className="container-fluid p-0">
-                <img className="bg-img"/>
-                <div className="row p-0 m-0">
-                    <Navbar/>
+            <div class="container-fluid p-0">
+                <img class="bg-img" />
+                <div class="row d-block mb-2">
+                    <Navbar />
                 </div>
-                    <div className="row p-0 m-0 d-flex justify-content-around">
-                        
-                        <div id="CreateProfile"className="col-md-9">
-                            <Createprofile />
-                        </div>
-                        <div id="Suggestions"className="col-md-2">
-                            <Suggestion />
-                        </div>
+                <div class="row p-0 m-0 d-flex justify-content-around">
+
+                    <div id="CreateProfile" class="col-md-8">
+                        <Createprofile />
                     </div>
+                    {/* <div id="Suggestions" class="col-md-3">
+                        {loading?'loading':Sidebar}
+                    </div> */}
+                </div>
             </div>
         </>
     )
 }
 
-export default CreateProfile;  
+export default CreateProfile;

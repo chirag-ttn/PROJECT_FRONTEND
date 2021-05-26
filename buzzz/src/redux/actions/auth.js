@@ -1,6 +1,5 @@
 import Cookie from 'js-cookie'
 import axios from 'axios'
-import Api from '../Api/localhost'
 
 export const setToken = () => {
     let auth = false;
@@ -32,7 +31,7 @@ export const removeToken = ()=>{
 }
 export const getUser = (dispatch)=>{
     return async ()=>{
-        const response = await axios.get('/api/secure/getUserData')
+        const response = await axios.get('/users/getUser')
         dispatch({type:'GET_USER',payload:response.data})
     }
 }

@@ -3,25 +3,25 @@ import Login from './pages/Login/Login'
 import Feeds from './pages/Feeds/Feeds'
 import CreateProfile from './pages/CreateProfile/CreateProfile'
 import { Redirect, Switch, Route } from 'react-router-dom'
-
-import { useSelector } from 'react-redux'
-
+import {getUsers} from './redux/actions/users'
+import { useSelector,useDispatch } from 'react-redux'
+import {getProfile} from './redux/actions/Profile'
 import axios from 'axios'
+import { useEffect } from 'react';
 
 axios.interceptors.request.use(config => {
-  // console.log('Request was sent');
+  console.log('Request was sent');
   config.headers.Authorization = localStorage.getItem('token');
-  // console.log(config)
+  console.log(config)
   return config;
 }, error => {
-  // handle the error
   return Promise.reject(error);
 });
-
-
 function App() {
-
-
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    getUsers(dispatch)
+  },[getUsers])
   const isAuth = useSelector(state => state.authReducer.auth)
   // console.log(isAuth)
   const ProtectedRoutes = (<>
