@@ -15,8 +15,8 @@ export default function CreatePosts(props) {
         formData.append('image', event.target.files[0])
     }
     const handleSubmit = (event) => {
-        
         formData.append('text', document.getElementById('text').value)
+        formData.append('profile_id',props.profile_id)
         document.getElementById('text').value=""
         document.getElementById('file').value=""
         createPost(formData)(dispatch)
