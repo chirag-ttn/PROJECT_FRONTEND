@@ -43,6 +43,35 @@ function Feeds() {
     const toggleHandler = () => {
         setsf(!sf)
     }
+    const wasLiked = (val)=>{
+        console.log(val)
+        let user_id = val.author_id._id
+        let {likes,dislikes} = val
+        let islike = false
+        let isdislike = false;
+        for(let idx=0;idx<likes.length;idx++){
+            console.log(user_id,likes[idx])
+            if(likes[idx]==user_id)
+            {
+                
+                islike=true;
+                break;
+            }
+        }
+        for(let idx=0;idx<dislikes.length;idx++){
+            if(dislikes[idx]==user_id)
+            {
+                isdislike=true;
+                break;
+            }
+        }
+        // console.log(islike,isdislike)
+        return {
+            islike:islike,
+            isdislike:isdislike
+        }
+    }
+    //set isLike/isDislike in every post
     return (
         <>
             <div class='section'>
@@ -63,7 +92,9 @@ function Feeds() {
                                     <div class='scroll'>
 
                                         {post.posts.map(val => {
-                                            return <Posts key={val._id} val={val} />
+                                            let {islike,isdislike} = wasLiked(val)
+                                            // console.log(islike,isdislike)
+                                            return <Posts key={val._id} val={val} islike={islike} isdislike={isdislike} />
 
                                         })}
 

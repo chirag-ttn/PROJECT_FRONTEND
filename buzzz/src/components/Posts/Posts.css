@@ -99,3 +99,24 @@ hr {
     border-radius: 10px;
 }
 
+.btn-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.styledBtns{
+    width: 30%;
+    background-color: transparent;
+    border: none;
+    font-size: large;
+    color: blue;
+}
+.clickedBtns{
+    width: 30%;
+    background-color: transparent;
+    border: none;
+    font-size: large;
+    color: white;
+    font-weight: bold;
+    background-color: blue;
+}
