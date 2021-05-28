@@ -39,9 +39,6 @@ function CreateProfile() {
                     <div id="CreateProfile" class="col-md-8">
                         <Createprofile />
                     </div>
-                    {/* <div id="Suggestions" class="col-md-3">
-                        {loading?'loading':Sidebar}
-                    </div> */}
                 </div>
             </div>
         </>

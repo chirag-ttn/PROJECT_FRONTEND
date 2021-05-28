@@ -34,8 +34,8 @@
     position: relative;
 }
 .cover-btn{
+    font-size: small;
     position: absolute;
-    color:red;
     right:10px;
     bottom:10px;
     font-size: 30px;

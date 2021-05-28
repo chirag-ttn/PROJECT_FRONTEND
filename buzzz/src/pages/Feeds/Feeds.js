@@ -93,8 +93,17 @@ function Feeds() {
 
                                         {post.posts.map(val => {
                                             let {islike,isdislike} = wasLiked(val)
-                                            // console.log(islike,isdislike)
-                                            return <Posts key={val._id} val={val} islike={islike} isdislike={isdislike} />
+                                            return <Posts 
+                                            key={val._id}
+                                            val={val} 
+                                            islike={islike} 
+                                            isdislike={isdislike} 
+                                            comments={val.comments} 
+                                            current_user={current_user_profile._id}
+                                            like_count = {val.likes.length}
+                                            dislike_count = {val.dislikes.length}
+                                            flag_count = {val.flagged}
+                                            />
 
                                         })}
 

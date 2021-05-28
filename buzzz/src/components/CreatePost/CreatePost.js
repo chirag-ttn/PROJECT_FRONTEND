@@ -31,7 +31,7 @@ export default function CreatePosts(props) {
                 <form class="main">
                     <input class='addpost' id='text' name='text' type='text' onChange={handleTextChange} placeholder="What's on your mind, Chirag ?" />
                     <div class='file'>
-                        <input id='file' name='image' type='file' onChange={handleFileChange} hidden />
+                        <input id='file' name='img' type='file' onChange={handleFileChange} hidden />
                         <label for='file' ><i style={{ 'color': 'green' }} class="fas fa-images"></i> Photos</label>
                     </div>
                     <button type='submit' onClick={(event) => {
