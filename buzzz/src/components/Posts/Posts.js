@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts } from '../../redux/actions/Posts'
+import { getPosts,getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 
 export default function Posts(props) {
@@ -118,6 +118,23 @@ export default function Posts(props) {
             .catch(err => console.log(err))
 
     }
+    const approveFlaggedPost = () =>{
+        axios.post('http://localhost:4444/posts/approveFlaggedPost', {
+            post_id: post_id
+        })
+            .then(getFlaggedPosts(dispatch))
+            .catch(err => console.log(err))
+
+    }
+    const removeFlaggedPost = () =>{
+        axios.post('http://localhost:4444/posts/removeFlaggedPost', {
+            post_id: post_id
+        })
+            .then(getFlaggedPosts(dispatch))
+            .catch(err => console.log(err))
+
+    }
+
     const showCommentToggler = () => {
         setShowComment(true)
     }
@@ -159,9 +176,20 @@ export default function Posts(props) {
                         <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">
                             <Moment fromNow>{props.val.date}</Moment>
                         &nbsp;
+                            {!props.moderatorView?
                             <button style={{ "border": "none", "background": "transparent" }} onClick={showFlagged}>
                                 <i class="fa fa-ellipsis-h"></i>
                             </button>
+                            :
+                            <>
+                                <button className='btn' style={{ "border": "none", "background": "transparent",'color':'green' }} onClick={approveFlaggedPost}>
+                                <i class="far fa-check-circle"></i>
+                                </button>
+                                <button className='btn' style={{ "border": "none", "background": "transparent",'color':'red' }} onClick={removeFlaggedPost}>
+                                <i class="fas fa-ban"></i>
+                            </button>
+                            </>
+                            }
                         </small>
                         </div>
 
@@ -191,6 +219,7 @@ export default function Posts(props) {
 
 
                         <div class="">
+                            
                             <div class="row">
                                 <div class='btn-container'>
                                     {like
@@ -233,18 +262,6 @@ export default function Posts(props) {
                                     </span>
                                     </button>
 
-                                    {/* {flag ? <button onClick={unflagHandler} type="button" className="clickedBtns">
-                                        <span className="span-comment">
-                                            <i class="fa fa-flag"></i>
-                                        UnFlag
-                                    </span>
-                                    </button> :
-                                        <button onClick={flagHandler} type="button" className="styledBtns">
-                                            <span className="span-comment">
-                                                <i class="fa fa-flag"></i>
-                                        Flag
-                                    </span>
-                                    </button>} */}
                                 </div>
                             </div>
                             <hr />

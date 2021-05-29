@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {useDispatch} from 'react-redux'
 import './suggestion.css'
+import {Link} from 'react-router-dom'
 import {getProfile} from '../../../redux/actions/Profile'
 
 export default function Suggestion(props) {
@@ -55,10 +56,11 @@ return (
             <div class='img'>
                 <img src={props.profile_pic}  />
             </div>
+            <a href={`/userProfile/${props.other_profile_id}`}>
             <div class='text'>
                 {props.f_name + ' ' + props.l_name}
             </div>
-
+            </a>
             <div class='btn'>
                 <div className='row d-flex justify-content-center'>
                 {props.status==0?suggestionsBtn:

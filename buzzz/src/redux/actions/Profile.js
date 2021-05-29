@@ -27,3 +27,11 @@ export const getProfile = (dispatch) => {
             .catch(err=> dispatch(getProfileFailure(err)))
     }
 }
+export const getUserProfile = (dispatch) => {
+    return (data) => {  
+            dispatch(getProfileStart())
+            axios.get('http://localhost:4444/profile/getAnyUserProfile?profile_id='+data)
+            .then(res => dispatch(getProfileSuccess(res)))
+            .catch(err=> dispatch(getProfileFailure(err)))
+    }
+}

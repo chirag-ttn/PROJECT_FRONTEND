@@ -7,9 +7,10 @@ import Navbar from '../../components/Navbar/Navbar'
 import Suggestions from '../../components/Suggestions/suggestions'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import Posts from '../../components/Posts/Posts'
-import { getPosts } from '../../redux/actions/Posts'
+import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import { getProfile } from '../../redux/actions/Profile'
 import './Feeds.css'
+
 function Feeds() {
     const dispatch = useDispatch()
     useEffect(() => {
@@ -41,36 +42,40 @@ function Feeds() {
     const toggleHandler = () => {
         setsf(!sf)
     }
-    
-    const wasLiked = (val)=>{
+
+    const wasLiked = (val) => {
         // console.log(val)
         let user_id = current_user_profile._id
-        let {likes,dislikes} = val
+        let { likes, dislikes } = val
         let islike = false
         let isdislike = false;
-        for(let idx=0;idx<likes.length;idx++){
-            console.log(user_id,likes[idx])
-            if(likes[idx]==user_id)
-            {
-                
-                islike=true;
+        for (let idx = 0; idx < likes.length; idx++) {
+            console.log(user_id, likes[idx])
+            if (likes[idx] == user_id) {
+
+                islike = true;
                 break;
             }
         }
-        for(let idx=0;idx<dislikes.length;idx++){
-            if(dislikes[idx]==user_id)
-            {
-                isdislike=true;
+        for (let idx = 0; idx < dislikes.length; idx++) {
+            if (dislikes[idx] == user_id) {
+                isdislike = true;
                 break;
             }
         }
         // console.log(islike,isdislike)
         return {
-            islike:islike,
-            isdislike:isdislike
+            islike: islike,
+            isdislike: isdislike
         }
     }
     //set isLike/isDislike in every post
+    const switchModeratorViewOn = () => {
+        getFlaggedPosts(dispatch)
+    }
+    const switchModeratorViewOff = () => {
+        getPosts(dispatch)
+    }
     return (
         <>
             <div class='section'>
@@ -87,20 +92,39 @@ function Feeds() {
                                 </div>
                             </div>
                             <div class='row'>
+                                <div class='col-md-12 toggle-switch-container'>
+                                    <p class='col-md-2'>Top</p>
+                                    <div className=' col-md-5 d-flex'>
+
+
+                                        {post.moderatorView ?
+                                            <label onClick={switchModeratorViewOff} class="switch ">
+                                                <input type="checkbox" />
+                                                <span class="slider round">Moderator View OFF</span>
+                                            </label> :
+                                            <label onClick={switchModeratorViewOn} class="switch ">
+                                                <input type="checkbox" />
+                                                <span class="slider round">Moderator View ON</span>
+                                            </label>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='row'>
                                 <div class='col-md-12'>
                                     <div class='scroll'>
                                         {post.posts.map(val => {
-                                            let {islike,isdislike} = wasLiked(val)
-                                            return <Posts 
-                                            key={val._id}
-                                            val={val} 
-                                            islike={islike} 
-                                            isdislike={isdislike} 
-                                            comments={val.comments} 
-                                            current_user={current_user_profile._id}
-                                            like_count = {val.likes.length}
-                                            dislike_count = {val.dislikes.length}
-                                            flag_count = {val.flagged}
+                                            let { islike, isdislike } = wasLiked(val)
+                                            return <Posts
+                                                key={val._id}
+                                                val={val}
+                                                islike={islike}
+                                                moderatorView={post.moderatorView}
+                                                isdislike={isdislike}
+                                                comments={val.comments}
+                                                current_user={current_user_profile._id}
+                                                like_count={val.likes.length}
+                                                dislike_count={val.dislikes.length}
+                                                flag_count={val.flagged}
                                             />
 
                                         })}

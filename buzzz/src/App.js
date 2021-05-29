@@ -2,6 +2,7 @@ import './App.css';
 import Login from './pages/Login/Login'
 import Feeds from './pages/Feeds/Feeds'
 import CreateProfile from './pages/CreateProfile/CreateProfile'
+import UserProfile from './pages/UserProfile/UserProfile'
 import { Redirect, Switch, Route } from 'react-router-dom'
 import {getUsers} from './redux/actions/users'
 import { useSelector,useDispatch } from 'react-redux'
@@ -31,6 +32,9 @@ function App() {
       </Route>
       <Route path="/feeds">
         <Feeds />
+      </Route>
+      <Route path='/userProfile/:id'>
+        <UserProfile />
       </Route>
       <Route exact path='/'>
         {isAuth ? <Redirect to='/createProfile' /> : <Login />}

@@ -21,8 +21,8 @@ function Navbar(props) {
         <>
             <div class='section'>
                 <div class="container-fluid p-0">
-                    <nav class="navbar-fixed-top navbar-light bg-light">
-                        <div class="d-flex justify-content-between container-fluid">
+                    <nav class="navbar-fixed-top navbar-light bg-light section-nav">
+                        <div class="d-flex justify-content-between container-fluid p-0">
                             <div class="brand">
                                 <Img src={logo} alt="logo" height="50px" width="100px" />
                             </div>

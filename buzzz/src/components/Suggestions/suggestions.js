@@ -7,13 +7,6 @@ import './suggestions.css'
 
 export default function Suggestions(props) {
 
-    const updateSuggestions = () => {
-        
-        axios.get('http://localhost:4444/users/updateSuggestions', { params: { user_id: props.id } })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-
-    }
 
     return (
         <div class='section-suggestion'>

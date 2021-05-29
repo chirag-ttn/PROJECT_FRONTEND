@@ -11,6 +11,12 @@ export const getPostSuccess = (data) => {
         payload: data
     }
 }
+export const getFlaggedPostSuccess = (data) => {
+    return {
+        type: "GET_POST_MODERATOR_SUCCESS",
+        payload: data
+    }
+}
 
 export const getPostFailure = (err) => {
     return {
@@ -48,6 +54,14 @@ export const getPosts = (dispatch) => {
         .catch(err=>dispatch(getPostFailure(err)))
     
 }
+export const getFlaggedPosts = (dispatch) => {
+    
+    dispatch(getPostStart())
+    axios.get('http://localhost:4444/posts/getFlaggedPosts')
+    .then(res=>dispatch(getFlaggedPostSuccess(res)))
+    .catch(err=>dispatch(getPostFailure(err)))
+
+}
 export const createPost = (data) => {
     return (dispatch) => {
         dispatch(createPostStart())
@@ -58,7 +72,6 @@ export const createPost = (data) => {
                 }
             }
         ).then(res=>{
-            console.log(res)
             dispatch(createPostSuccess(res.data))
         })
     }
