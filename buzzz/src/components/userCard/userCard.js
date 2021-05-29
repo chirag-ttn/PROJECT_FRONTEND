@@ -4,10 +4,11 @@ import './userCard.css'
 function UserCard(props) {
     return (
         <>
+
             <div class="col-md-12">
 
                 <div class="profile-card-4 text-center">
-                    <img src={props.picture} class="img img-responsive" />
+                    <img src={props.profile_image} class="img img-responsive" />
                     <div class="profile-content">
                         <div class="profile-name">{props.profile.firstname + ' ' + props.profile.lastname}
                         </div>

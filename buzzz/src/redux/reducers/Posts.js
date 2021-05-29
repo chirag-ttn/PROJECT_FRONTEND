@@ -7,19 +7,22 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+    console.log(action)
     switch (action.type) {
+        
         case "GET_POST_START":
             return {...state,getPostLoading:true}
         case "GET_POST_SUCCESS":
+            console.log('SUCCESS',action.payload.data)
             return {...state,getPostLoading:false,posts:action.payload.data}
         case "GET_POST_FAILURE":
             return {...state,getPostLoading:false,getPostError:action.payload.err}
         case "CREATE_POST_START":
             return {...state,createPostLoading:true}
         case "CREATE_POST_SUCCESS":
-            return {...state,createPostLoading:false}
+            return {...state,createPostLoading:false,posts:[action.payload,...state.posts]}
         case "CREATE_POST_FAILURE":
-            return {...state,createPostLoading:false,createPostError:action.payload.err}
+            return {...state,createPostLoading:false,createPostError:action.payload.data}
         default:
             return {...state}
     }

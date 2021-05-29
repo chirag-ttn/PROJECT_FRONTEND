@@ -18,10 +18,8 @@ function Feeds() {
         getUser(dispatch)()
     }, [])
 
-    const user = useSelector(state => state.authReducer)
     const post = useSelector(state => state.postReducer)
     const profile = useSelector(state => state.profileReducer)
-
     // console.log(post.posts[0].author_id,profile.profile.user_id)
 
     const current_user_profile = profile.profile
@@ -43,9 +41,10 @@ function Feeds() {
     const toggleHandler = () => {
         setsf(!sf)
     }
+    
     const wasLiked = (val)=>{
-        console.log(val)
-        let user_id = val.author_id._id
+        // console.log(val)
+        let user_id = current_user_profile._id
         let {likes,dislikes} = val
         let islike = false
         let isdislike = false;
@@ -75,22 +74,21 @@ function Feeds() {
     return (
         <>
             <div class='section'>
-                <Navbar picture={user.profile_pic} name={user.f_name + '' + user.l_name} onToggle={toggleHandler} />
+                <Navbar profile_image={current_user_profile.profile_image} username={current_user_profile.firstname + ' ' + current_user_profile.lastname} onToggle={toggleHandler} />
                 <div class="feed-container">
                     <div class="left-section">
-                        <UserCard picture={user.profile_pic} profile={current_user_profile} post={profile.profile} />
+                        <UserCard profile_image={current_user_profile.profile_image} profile={current_user_profile} post={profile.profile} />
                     </div>
                     <div class="mid-section">
                         <div class='container-fluid'>
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <CreatePost picture={user.profile_pic} profile_id={current_user_profile._id} />
+                                    <CreatePost picture={current_user_profile.profile_image} profile_id={current_user_profile._id} />
                                 </div>
                             </div>
                             <div class='row'>
                                 <div class='col-md-12'>
                                     <div class='scroll'>
-
                                         {post.posts.map(val => {
                                             let {islike,isdislike} = wasLiked(val)
                                             return <Posts 

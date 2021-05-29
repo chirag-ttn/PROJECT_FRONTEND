@@ -14,6 +14,9 @@ function Navbar(props) {
     }, [getUser])
     
     const state = useSelector(state => state.authReducer)
+    const {profile} = useSelector(state=> state.profileReducer)
+    let username = state.f_name+' '+state.l_name;
+
     return (
         <>
             <div class='section'>
@@ -25,8 +28,8 @@ function Navbar(props) {
                             </div>
                             <div class="right-links">
 
-                                <img class="user-profile-pic" src={state.profile_pic} alt="logo" />
-                                <p>{state.f_name + '' + state.l_name}</p>
+                                <img class="user-profile-pic" src={props.profile_image?props.profile_image:state.profile_pic} alt="logo" />
+                                <p>{props.username?props.username:username}</p>
 
                                 <i class="fab fa-facebook-messenger" />
                                 <button onClick={props.onToggle}>

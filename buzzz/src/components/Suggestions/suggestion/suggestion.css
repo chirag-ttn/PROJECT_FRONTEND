@@ -1,3 +1,41 @@
-#suggestion-content{
-    height: 70px;
+.suggestion-content{
+    margin-top: 20px;
+    height: max-content;
+    display: flex;
+    align-items: center;
+}
+.suggestion-content .img{
+    width: 20%;
+}
+.suggestion-content .img img{
+    width: 60%;
+    border-radius: 50%;
+}
+.suggestion-content .text{
+    width: 50%;
+    font-size: small;
+}
+.suggestion-content .btn{
+    width: 30%;
+}
+.add-btn{
+    width: fit-content;
+    font-size: 1em;
+    color: white;
+    background-color: green;
+    border-radius: 50%;
+
+}
+.add-f-btn{
+    width: fit-content;
+    color: white;
+    background-color:blue;
+    border-radius: 50%;
+
+}
+.remove-btn{
+    width: fit-content;
+    color: white;
+    background-color: red;
+    border-radius: 50%;
 }

@@ -4,13 +4,37 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    padding: 10px;
+    border-radius: 15px !important;
+    position: relative;
 }
 .card {
     margin-top: 10px;
     border: none;
     
 }
-
+.flag-modal{
+    position: absolute;
+    width: 20%;
+    right:0px;
+    top:50px;
+    background-color: whitesmoke;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.flag-modal:hover{
+    color: red;
+}
+.flag-modal p{
+    margin: 0;
+}
+#post-header{
+    width: 100%;
+    justify-content: space-between;
+}
 .ellipsis {
     color: #a09c9c
 }
@@ -67,20 +91,38 @@ hr {
 }
 
 .form-control {
-    border-radius: 26px
+    border-radius: 26px;
 }
 
 .comment-input {
-    position: relative
+    position: relative;
+    display: flex;
+
+    justify-content: space-between;
+
 }
 
-.fonts {
+.btn-comment{
     position: absolute;
-    right: 13px;
-    top: 8px;
-    color: #a09c9c
+    right: 10px;
+    top:5px;
+    height: 80%;
 }
+.hide-comments{
+    display: flex;
+    margin: 0;
+    justify-content: center;
+    color: grey;
+    align-items: center;
+    font-size: small;
 
+}
+.hide-comments:hover{
+    color: blue;
+}
+.show-comment:hover{
+    color:blue
+}
 .form-control:focus {
     color: #495057;
     background-color: #fff;
@@ -92,17 +134,19 @@ hr {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    border-radius: 30px;
 
 }
 .post-image img{
     width: 80%;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 
 .btn-container{
     width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     
 }
 .styledBtns{
@@ -112,7 +156,7 @@ hr {
     border:none;
     display: flex;
     justify-content: center;
-    color: blue;
+    color: grey;
 }
 .span{
     display: block;
@@ -145,28 +189,36 @@ hr {
 .clickedBtns{
 
     width: 33.3%;
-    background-color: blue;
+    background-color:none;
+    border-radius: 10px;
     font-size: small;
     border:none;
     display: flex;
     justify-content: center;
-    color: white;
+    color:blue;
 
 }
 .display-container{
     display: flex;
-    width: 40%;
-    height: min-content;
+    width: 15%;
+    height: 30px;
     justify-content: space-between;
     align-items: center;
     padding: 0px;
     margin: 0px;
 }
-.display-container div{
-    display: flex;
-    align-items: baseline;
-}
 .display-container p{
     margin: 0px;
+    margin-left:10px ;
 }
-    
+.display-container div{
+    display: flex;
+    height: fit-content;
+    align-items: center;
+}
+.display-container .like{
+    color:red;
+}
+.display-container .dislike{
+    color:blue;
+}

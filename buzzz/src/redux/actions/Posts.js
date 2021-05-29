@@ -26,6 +26,7 @@ export const createPostStart = () => {
 }
 
 export const createPostSuccess = (data) => {
+    console.log(data)
     return {
         type: "CREATE_POST_SUCCESS",
         payload: data
@@ -43,8 +44,7 @@ export const getPosts = (dispatch) => {
     
         dispatch(getPostStart())
         axios.get('http://localhost:4444/posts/getAllPosts')
-        .then(res=>
-            {return dispatch(getPostSuccess(res))})
+        .then(res=>dispatch(getPostSuccess(res)))
         .catch(err=>dispatch(getPostFailure(err)))
     
 }
@@ -57,9 +57,10 @@ export const createPost = (data) => {
                     'Content-type': 'multipart/form-data'
                 }
             }
-        )
-        .then(res=>dispatch(createPostSuccess(res)))
-        .catch(err=>dispatch(createPostFailure(err)))
+        ).then(res=>{
+            console.log(res)
+            dispatch(createPostSuccess(res.data))
+        })
     }
 
 }

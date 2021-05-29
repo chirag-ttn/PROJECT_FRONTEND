@@ -32,7 +32,7 @@ function CreateProfile() {
             <div class="container-fluid p-0">
                 <img class="bg-img" />
                 <div class="row d-block mb-2">
-                    <Navbar />
+                    <Navbar profile_image={current_user_profile.profile_image} username={current_user_profile.firstname+' '+current_user_profile.lastname}/>
                 </div>
                 <div class="row p-0 m-0 d-flex justify-content-around">
 

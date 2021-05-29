@@ -2,28 +2,56 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPosts } from '../../redux/actions/Posts'
+import Moment from 'react-moment'
+
 export default function Posts(props) {
-    useEffect(() => {
-        setlike(props.islike)
-        setdislike(props.isdislike)
 
-    }, [props.islike, props.isdislike])
-    // console.log('posts===>', props.val)
-
-    const profile_id = props.val.author_id._id
+    const profile_id = props.current_user
     const post_id = props.val._id
     const [like, setlike] = useState(false)
     const [dislike, setdislike] = useState(false)
     const [flag, setflag] = useState(false)
+    const [comment, setComment] = useState('')
 
+    const [showComment, setShowComment] = useState(false)
+    const [showFlag, setShowFlag] = useState(false)
+
+    const dispatch = useDispatch()
+    const verifyLikeStatus = () => {
+        axios.get('http://localhost:4444/posts/verifylikeStatus', {
+            params: {
+                user_profile_id: profile_id,
+                post_id: post_id
+            }
+        })
+            .then(res => setlike(res.data))
+            .catch(err => console.log(err))
+    }
+    const verifyDislikeStatus = () => {
+        axios.get('http://localhost:4444/posts/verifyDislikeStatus', {
+            params: {
+                user_profile_id: profile_id,
+                post_id: post_id
+            }
+        })
+            .then(res => setdislike(res.data))
+            .catch(err => console.log(err))
+    }
+    useEffect(() => {
+        verifyLikeStatus()
+        verifyDislikeStatus()
+    }, [])
     const likeHandler = () => {
         setlike(true)
         setdislike(false)
         axios.post('http://localhost:4444/posts/likePost', {
+
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
     }
     const unlikeHandler = () => {
@@ -32,7 +60,7 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
 
     }
@@ -43,7 +71,7 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
     }
     const undislikeHandler = () => {
@@ -52,17 +80,22 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
     }
+    const commentChangeHandler = (event) => {
+        setComment(event.target.value)
+    }
     const commentHandler = () => {
-        console.log(props.current_user, profile_id)
+        let commentStore = comment
+        setComment('')
+        setShowComment(true)
         axios.post('http://localhost:4444/posts/createComment', {
             profile_id: props.current_user,
             post_id: post_id,
-            comment: document.getElementById('fill-comment').value
+            comment: commentStore
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
     }
     const flagHandler = () => {
@@ -71,7 +104,7 @@ export default function Posts(props) {
             profile_id: props.current_user,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
 
     }
@@ -81,93 +114,160 @@ export default function Posts(props) {
             profile_id: props.current_user,
             post_id: post_id
         })
-            .then(res => console.log(res))
+            .then(getPosts(dispatch))
             .catch(err => console.log(err))
 
     }
-    console.log(props)
+    const showCommentToggler = () => {
+        setShowComment(true)
+    }
+    const hideShowComment = () => {
+        setShowComment(false)
+    }
+    const showFlagged = () => {
+        setShowFlag(!showFlag)
+    }
     return (
         <>
 
             <div class="card post-container">
-                <div class='d-flex flex-column col-md-11'>
-                    <div class="d-flex justify-content-between p-2 px-3">
-                        <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/UXdKE3o.jpg" width="50" class="rounded-circle" />
-                            <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{props.val.author_id.firstname + ' ' + props.val.author_id.lastname}</span> <small class="text-primary">Collegues</small>
+                <div class='d-flex justify-content-center flex-column col-md-12 '>
+                    {showFlag ?
+                    <div className='flag-modal'>
+                        {flag ?
+                            <button onClick={unflagHandler} type="button" className="clickedBtns text-danger">
+                                <span className="span-comment">
+                                    <i class="fa fa-flag"></i>
+                                        &nbsp;UnFlag
+                                    </span>
+                            </button> :
+
+                            <button onClick={flagHandler} type="button" className="styledBtns text-primary">
+                                <span className="span-comment">
+                                    <i class="fa fa-flag"></i>
+                                        &nbsp;Flag
+                                    </span>
+                            </button> }
+                            </div>: null}
+                    <div id='post-header' class="d-flex justify-content-between p-2">
+                        <div class="d-flex flex-row align-items-center p-2">
+                            <img src={props.val.author_id.profile_image} width="50" class="rounded-circle" />
+                            <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{props.val.author_id.firstname + ' ' + props.val.author_id.lastname}</span> <small class="text-primary">{props.val.author_id.designation}
+                            </small>
                             </div>
                         </div>
-                        <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{props.val.date}</small> <i class="fa fa-ellipsis-h"></i>
+                        <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">
+                            <Moment fromNow>{props.val.date}</Moment>
+                        &nbsp;
+                            <button style={{ "border": "none", "background": "transparent" }} onClick={showFlagged}>
+                                <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                        </small>
                         </div>
+
+
                     </div>
-                    <img src={props.val.imageUrl} />
+                    <p class="p-2 ml-2 my-0" style={{ "font-size": "18px" }}>{props.val.description}</p>
+                    <img className="p-2 post-image" src={props.val.imageUrl} />
 
-                    <div class="p-2">
-                        <p class="text-justify">{props.val.description}</p>
-                        <p class="display-container">
+                    <div class="p-2 ml-2">
+                        <div className='d-flex justify-content-between align-items-center'>
+                            <p class="display-container">
 
-                            <div><i className='fas fa-thumbs-up'></i> <p>{props.like_count?props.like_count:null}</p></div>
-                            <div><i className='fas fa-thumbs-down'></i> <p>{props.dislike_count?props.dislike_count:null}</p></div>
-                            <div><i className='fas fa-flag'></i> <p>{props.flag_count?props.flag_count:null}</p></div>
-                        </p>
-                        
-                        <hr/>
+                                <div >
+                                    <i className='fas fa-heart like'></i>
+                                    <p className='text-muted'>{props.like_count ? props.like_count : null}</p>
+                                </div>
+                                <div >
+                                    <i className='fas fa-thumbs-down dislike'></i>
+                                    <p className='text-muted'>{props.dislike_count ? props.dislike_count : null}</p>
+                                </div>
+                                {/* <div><i className='fas fa-flag'></i> <p>{props.flag_count ? props.flag_count : null}</p></div> */}
+                            </p>
+                            {/* {console.log(props)} */}
+                            <p className='m-0 show-comment' onClick={showCommentToggler}>comments <small>{props.comments.length}</small></p>
+                        </div>
+                        <hr />
 
 
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class='btn-container'>
-                                        {like
-                                            ? <button className="clickedBtns" type="button" onClick={unlikeHandler} ><span className="span">Like<i class="fas fa-thumbs-up"></i></span></button>
-                                            : <button className="styledBtns" type="button" onClick={likeHandler} ><span className="span">Like<i class="far fa-thumbs-up"></i></span></button>
-                                        }
-                                        {dislike
-                                            ? <button className="clickedBtns" type="button" onClick={undislikeHandler} ><span className="span-dislike">Dislike <i class="fas fa-thumbs-down"></i></span></button>
-                                            : <button className="styledBtns" type="button" onClick={dislikeHandler} ><span className="span-dislike">Dislike<i class="far fa-thumbs-down"></i></span></button>
-                                        }
-                                        <button type="button" className="styledBtns">
-                                            <span className="span-comment" onClick={() => {
-                                                document.getElementById('fill-comment').focus()
-                                            }}>
-                                                <i class="fas fa-comment-alt"></i>
+                        <div class="">
+                            <div class="row">
+                                <div class='btn-container'>
+                                    {like
+                                        ?
+                                        <button className="clickedBtns" type="button" onClick={unlikeHandler}>
+                                            <span className="span">
+                                                <i class="fas fa-thumbs-up"></i>
+                                                <p className='m-0'>Like</p>
+                                            </span>
+                                        </button>
+                                        :
+                                        <button className="styledBtns" type="button" onClick={likeHandler}>
+                                            <span className="span">
+                                                <i class="far fa-thumbs-up"></i>
+                                                <p className='m-0'>Like</p>
+                                            </span>
+                                        </button>
+                                    }
+                                    {dislike
+                                        ?
+                                        <button className="clickedBtns" type="button" onClick={undislikeHandler} >
+                                            <span className="span-dislike">
+                                                <i class="fas fa-thumbs-down"></i>
+                                                <p className='m-0'>Dislike</p>
+                                            </span>
+                                        </button>
+                                        :
+                                        <button className="styledBtns" type="button" onClick={dislikeHandler}>
+                                            <span className="span-dislike">
+                                                <i class="far fa-thumbs-down"></i>
+                                                <p className='m-0'>Dislike</p>
+                                            </span>
+                                        </button>
+                                    }
+                                    <button type="button" className="styledBtns">
+                                        <span className="span-comment" onClick={() => {
+                                        }}>
+                                            <i class="fas fa-comment-alt"></i>
                                         comment
                                     </span>
-                                        </button>
+                                    </button>
 
-                                        {flag ? <button onClick={unflagHandler} type="button" className="clickedBtns">
+                                    {/* {flag ? <button onClick={unflagHandler} type="button" className="clickedBtns">
+                                        <span className="span-comment">
+                                            <i class="fa fa-flag"></i>
+                                        UnFlag
+                                    </span>
+                                    </button> :
+                                        <button onClick={flagHandler} type="button" className="styledBtns">
                                             <span className="span-comment">
                                                 <i class="fa fa-flag"></i>
-                                        UnFlag 
-                                    </span>
-                                        </button> :
-                                            <button onClick={flagHandler} type="button" className="styledBtns">
-                                                <span className="span-comment">
-                                                    <i class="fa fa-flag"></i>
                                         Flag
                                     </span>
-                                            </button>}
-                                    </div>
+                                    </button>} */}
                                 </div>
-                                <hr />
-                                {/* load comments */}
+                            </div>
+                            <hr />
 
-                                <div class="comments">
+                            {/* show comments */}
+                            {showComment ?
+                                <div class="comments" key={props.val._id} id={props.val._id} >
+                                    <p className="hide-comments" onClick={hideShowComment}>hide comments &nbsp;<i class="fas fa-chevron-up"></i></p>
                                     {props.comments.map((comment) => {
-                                        return <Comment key={comment._id} val={comment} />
+                                        return <Comment key={comment._id} val={comment} profile={comment.profile_id} />
                                     })}
-                                </div>
-                                {/* createComments */}
-                                <div class="comment-input">
-                                    <input type="text" id="fill-comment" class="form-control" placeholder="write a comment...." required />
-                                    <div class="fonts">
-                                        <button onClick={commentHandler}>
-                                            <i class="fas fa-paper-plane"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                </div> : null}
+                            {/* createComments */}
+                            <div class="comment-input">
+                                <input type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
+                                <button className='btn-comment btn btn-primary' onClick={commentHandler}>
+                                    add
+                                    </button>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </>
     )
 }

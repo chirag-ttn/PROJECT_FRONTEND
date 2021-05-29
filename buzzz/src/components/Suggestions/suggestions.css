@@ -1,11 +1,17 @@
 .section-suggestion{
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
     background-color: white;
-    height: 60%;
+    height: 50%;
     margin-top: 10px;
     border-radius: 10px;
     overflow-y: scroll;
     margin:10px 10px;
+}
+.suggestion-container{
+    width: 80%;
 }
 .section-suggestion::-webkit-scrollbar{
     display: none;

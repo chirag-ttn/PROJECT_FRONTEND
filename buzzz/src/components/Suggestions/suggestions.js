@@ -17,14 +17,14 @@ export default function Suggestions(props) {
 
     return (
         <div class='section-suggestion'>
-            <div class='container-fluid'>
+            <div class='suggestion-container'>
                 <div className="row d-flex justify-content-around">
                     <p>{props.heading}</p>
-                    {props.status == 0 ?
+                    {/* {props.status == 0 ?
                         <button onClick={updateSuggestions}>
                             <i class="fas fa-spinner"></i>
                         </button>
-                        : null}
+                        : null} */}
                 </div>
                 <div class="row">
                     <div class='col-md-9'>
@@ -42,11 +42,12 @@ export default function Suggestions(props) {
                         email={val.email}
                         f_name={val.firstname}
                         l_name={val.lastname}
-                        profile_pic={val.profile_pic}
+                        profile_pic={val.profile_image}
                         other_profile_id={val._id}
                         status={props.status}
                     />
                 })}
+   
                 {/* <Suggestion src={profile_pic}/> */}
 
             </div>

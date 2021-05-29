@@ -4,6 +4,7 @@ import Form from '../Form/Form'
 import axios from 'axios'
 import './Createprofile.css'
 import { getUser } from '../../redux/actions/auth'
+import {getProfile} from '../../redux/actions/Profile'
 const submit = values => {
 
     axios({
@@ -24,64 +25,70 @@ const submit = values => {
 function Profile() {
     const dispatch = useDispatch()
     useEffect(() => {
-        getUser(dispatch)()
-    }, [getUser])
+        getProfile(dispatch)()
+    }, [getProfile])
 
-    const state = useSelector(state => state.authReducer)
-    let formdata = new FormData()
-    const [img,setImg] = useState(false)
-    const onProfileChangeHandler = (event)=>{
-        setImg(true);
-        formdata.append('profile_image',event.target.files[0])
-    }
-    const onCoverChangeHandler = (event)=>{
-        setImg(true);
-        formdata.append('cover_image',event.target.files[0])
-    }
-    const uploadImageHandler = ()=>{
-        setImg(false);
-        axios.post('http://localhost:4444/profile/uploadImage',formdata,
-            {
-                headers: {
-                    'Content-type':'multipart/form-data'
-                }
-            }
-        )
-    }
-    
-    
+    const profile = useSelector(state=>state.profileReducer.profile)
+    const [img, setImg] = useState(false)
+
+
     let savebtn = (
         <>
 
-        <div className="d-flex justify-content-between align-items-center">
-            <div>Do You wish to proceed ?</div>
-            <div>
-                <button onClick={()=>{setImg(false)}}className="btn btn-light">Cancel</button>
-                <button onClick={uploadImageHandler}className="btn btn-primary">Save Changes</button>
+            <div className="d-flex justify-content-between align-items-center">
+                <div>Do You wish to proceed ?</div>
+                <div>
+                    <button onClick={() => { setImg(false) }} className="btn btn-light">Cancel</button>
+                    <button type="submit" onClick={(event) => {
+                        event.preventDefault()
+                        handleSubmit()
+                        setImg(false)
+                    }} className="btn btn-primary">Save Changes</button>
+                </div>
             </div>
-        </div>
         </>
     )
+    const handleSubmit = () => {
+        let formdata = new FormData()
+        console.log(document.getElementById('profile_image'))
+        formdata.append('profile_image', document.getElementById('profile_image').files[0])
+        formdata.append('cover_image', document.getElementById('cover_image').files[0])
+        axios.post('http://localhost:4444/profile/uploadImage', formdata, {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            }
+        }).then(res => console.log(res))
+    }
     return (
-        <form class="form-container container-fluid p-0">
-            {img?savebtn:null}
+        <div class="form-container container-fluid p-0">
             <div class="row cover-img">
-                <img class="cover" />
-
-                <input id='cover_image' name='cover_image' type='file' hidden onChange={onCoverChangeHandler}/>
-                <label className=" btn btn-light cover-btn" for='cover_image' ><i className="fas fa-camera"></i> Edit Cover</label>
-
+                <img src={profile.cover_image}class="cover" />
 
             </div>
             <div class="imageWrapper">
-                <img class="profile" src={state.profile_pic} />
-                <input id="profile_image" type="file"  name="profile_image" onChange={onProfileChangeHandler} hidden />
-                <label for="profile_image" className="btn btn-light cover-btn icon">
-                    <i class="fas fa-camera"></i>
-                </label>
+                
+                <img class="profile" src={profile.profile_image} />
+
             </div>
+            <form class="main">
+                <div class='imageWrapper'>
+                    <input id="profile_image" type="file" name="profile_image" onChange={() => { setImg(true) }} hidden />
+                    <label for="profile_image" className="btn btn-light icon">
+                        <i class="fas fa-camera"></i>
+                    </label>
+
+                </div>
+                <div class="cover-img">
+
+                    <input id='cover_image' name='cover_image' type='file' onChange={() => { setImg(true) }} hidden />
+                    <label className=" btn btn-light cover-btn" for='cover_image' ><i className="fas fa-camera"></i> Edit Cover</label>
+
+
+                </div>
+                {img ? savebtn : null}
+            </form>
             <Form onSubmit={submit} />
-        </form>
+        </div>
 
     )
 }
