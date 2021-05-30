@@ -17,12 +17,13 @@ export default function Posts(props) {
     const [errorComment, seterrorComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [showFlag, setShowFlag] = useState(false)
-    const {islike,isdislike} = props;
+    const { islike, isdislike, isflagged } = props;
     const dispatch = useDispatch()
-    useEffect(()=>{
+    useEffect(() => {
         setlike(islike)
         setdislike(isdislike)
-    },[islike,isdislike])
+        setflag(isflagged)
+    }, [islike, isdislike, isflagged])
     const likeHandler = () => {
         setlike(true)
         setdislike(false)
@@ -124,7 +125,7 @@ export default function Posts(props) {
     }
 
     const showCommentToggler = () => {
-        setShowComment(true)
+        setShowComment(!showComment)
     }
     const hideShowComment = () => {
         setShowComment(false)
@@ -132,6 +133,74 @@ export default function Posts(props) {
     const showFlagged = () => {
         setShowFlag(!showFlag)
     }
+    let ButtonBox = (
+        <div class="row">
+            <div class='btn-container'>
+                {like
+                    ?
+                    <button className="clickedBtns" type="button" onClick={unlikeHandler}>
+                        <span className="span">
+                            <i class="fas fa-thumbs-up"></i>
+                            <p className='m-0'>Like</p>
+                        </span>
+                    </button>
+                    :
+                    <button className="styledBtns" type="button" onClick={likeHandler}>
+                        <span className="span">
+                            <i class="far fa-thumbs-up"></i>
+                            <p className='m-0'>Like</p>
+                        </span>
+                    </button>
+                }
+                {dislike
+                    ?
+                    <button className="clickedBtns" type="button" onClick={undislikeHandler} >
+                        <span className="span-dislike">
+                            <i class="fas fa-thumbs-down"></i>
+                            <p className='m-0'>Dislike</p>
+                        </span>
+                    </button>
+                    :
+                    <button className="styledBtns" type="button" onClick={dislikeHandler}>
+                        <span className="span-dislike">
+                            <i class="far fa-thumbs-down"></i>
+                            <p className='m-0'>Dislike</p>
+                        </span>
+                    </button>
+                }
+                <button type="button" className="styledBtns">
+                    <span className="span-comment" onClick={() => {
+                    }}>
+                        <i class="fas fa-comment-alt"></i>
+                                        comment
+                                    </span>
+                </button>
+
+            </div>
+        </div>
+    )
+    let showcomment = (
+        <>
+            {showComment ?
+                <div class="comments" key={props.val._id} id={props.val._id} >
+                    <p className="hide-comments" onClick={hideShowComment}>hide comments &nbsp;<i class="fas fa-chevron-up"></i></p>
+                    {props.comments.map((comment) => {
+                        return <Comment key={comment._id} val={comment} profile={comment.profile_id} />
+                    })}
+                </div> : null}
+        </>
+    )
+    let createComment = (
+        <>
+            <div class="comment-input">
+                <input type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
+                <button className='btn-comment btn btn-primary' onClick={commentHandler}>
+                    add
+                                </button>
+            </div>
+            {errorComment ? <span className={'text-danger'}>Please fill the comment</span> : null}
+        </>
+    )
     return (
         <>
 
@@ -184,8 +253,8 @@ export default function Posts(props) {
 
                     </div>
                     <p class="p-2 ml-2 my-0" style={{ "font-size": "18px" }}>{props.val.description}</p>
-                    {props.val.imageUrl!=='no-image'?
-                    <img className="p-2 post-image" src={props.val.imageUrl} />:null}
+                    {props.val.imageUrl !== 'no-image' ?
+                        <img className="p-2 post-image" src={props.val.imageUrl} /> : null}
 
                     <div class="p-2 ml-2">
                         <div className='d-flex justify-content-between align-items-center'>
@@ -208,69 +277,21 @@ export default function Posts(props) {
 
 
                         <div class="">
-
-                            <div class="row">
-                                <div class='btn-container'>
-                                    {like
-                                        ?
-                                        <button className="clickedBtns" type="button" onClick={unlikeHandler}>
-                                            <span className="span">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <p className='m-0'>Like</p>
-                                            </span>
-                                        </button>
-                                        :
-                                        <button className="styledBtns" type="button" onClick={likeHandler}>
-                                            <span className="span">
-                                                <i class="far fa-thumbs-up"></i>
-                                                <p className='m-0'>Like</p>
-                                            </span>
-                                        </button>
-                                    }
-                                    {dislike
-                                        ?
-                                        <button className="clickedBtns" type="button" onClick={undislikeHandler} >
-                                            <span className="span-dislike">
-                                                <i class="fas fa-thumbs-down"></i>
-                                                <p className='m-0'>Dislike</p>
-                                            </span>
-                                        </button>
-                                        :
-                                        <button className="styledBtns" type="button" onClick={dislikeHandler}>
-                                            <span className="span-dislike">
-                                                <i class="far fa-thumbs-down"></i>
-                                                <p className='m-0'>Dislike</p>
-                                            </span>
-                                        </button>
-                                    }
-                                    <button type="button" className="styledBtns">
-                                        <span className="span-comment" onClick={() => {
-                                        }}>
-                                            <i class="fas fa-comment-alt"></i>
-                                        comment
-                                    </span>
-                                    </button>
-
-                                </div>
-                            </div>
-                            <hr />
+                            {!props.moderatorView ?
+                                <>
+                                    {ButtonBox}
+                                    <hr />
+                                    {showcomment}
+                                    {createComment}
+                                    </> :
+                                    <>
+                                    {showcomment}
+                                    </>
+                                }
 
                             {/* show comments */}
-                            {showComment ?
-                                <div class="comments" key={props.val._id} id={props.val._id} >
-                                    <p className="hide-comments" onClick={hideShowComment}>hide comments &nbsp;<i class="fas fa-chevron-up"></i></p>
-                                    {props.comments.map((comment) => {
-                                        return <Comment key={comment._id} val={comment} profile={comment.profile_id} />
-                                    })}
-                                </div> : null}
+                            
                             {/* createComments */}
-                            <div class="comment-input">
-                                <input type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
-                                <button className='btn-comment btn btn-primary' onClick={commentHandler}>
-                                    add
-                                </button>
-                            </div>
-                                {errorComment?<span className={'text-danger'}>Please fill the comment</span>:null}
                         </div>
                     </div>
                 </div>

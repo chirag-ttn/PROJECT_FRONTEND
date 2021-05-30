@@ -45,22 +45,27 @@ function Feeds() {
         setsf(!sf)
     }
 
-    const wasLiked = (val) => {
+    const reserved_post_state = (val) => {
         // console.log(val)
         let user_id = current_user_profile._id
-        let { likes, dislikes } = val
+        let { likes, dislikes, flagged } = val
         let islike = false
         let isdislike = false;
+        let isflagged = false;
         for (let idx = 0; idx < likes.length; idx++) {
-            console.log(user_id, likes[idx])
-            if (likes[idx] == user_id) {
-
+            if (likes[idx] === user_id) {
                 islike = true;
                 break;
             }
         }
+        for (let idx = 0; idx < flagged.length; idx++) {
+            if (flagged[idx] === user_id) {
+                isflagged = true;
+                break;
+            }
+        }
         for (let idx = 0; idx < dislikes.length; idx++) {
-            if (dislikes[idx] == user_id) {
+            if (dislikes[idx] === user_id) {
                 isdislike = true;
                 break;
             }
@@ -68,7 +73,8 @@ function Feeds() {
         // console.log(islike,isdislike)
         return {
             islike: islike,
-            isdislike: isdislike
+            isdislike: isdislike,
+            isflagged:isflagged
         }
     }
     //set isLike/isDislike in every post
@@ -115,13 +121,14 @@ function Feeds() {
                                 <div class='col-md-12'>
                                     <div class='scroll'>
                                         {post.posts.map(val => {
-                                            let { islike, isdislike } = wasLiked(val)
+                                            let { islike, isdislike, isflagged } = reserved_post_state(val)
                                             return <Posts
                                                 key={val._id}
                                                 val={val}
                                                 islike={islike}
-                                                moderatorView={post.moderatorView}
                                                 isdislike={isdislike}
+                                                isflagged={isflagged}
+                                                moderatorView={post.moderatorView}
                                                 comments={val.comments}
                                                 current_user={current_user_profile._id}
                                                 like_count={val.likes.length}
