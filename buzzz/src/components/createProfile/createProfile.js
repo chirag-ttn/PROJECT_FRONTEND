@@ -5,32 +5,27 @@ import axios from 'axios'
 import './Createprofile.css'
 import { getUser } from '../../redux/actions/auth'
 import {getProfile} from '../../redux/actions/Profile'
-const submit = values => {
 
-    axios({
-        method: "post",
-        url: "http://localhost:4444/profile/createProfile",
-        data: JSON.stringify(values),
-        headers: { "Content-Type": 'application/json' },
-    })
-        .then(function (response) {
-            console.log(response)
-            alert('Form Submitted')
-        })
-        .catch(function (response) {
-            console.log(response)
-            alert('Error')
-        });
-}
-function Profile() {
+function Profile(props) {
     const dispatch = useDispatch()
-    useEffect(() => {
-        getProfile(dispatch)()
-    }, [getProfile])
+    const submit = values => {
 
-    const profile = useSelector(state=>state.profileReducer.profile)
+        axios({
+            method: "post",
+            url: "http://localhost:4444/profile/createProfile",
+            data: JSON.stringify(values),
+            headers: { "Content-Type": 'application/json' },
+        })
+            .then(function (response) {
+                console.log(response)
+                getProfile(dispatch)()
+            })
+            .catch(function (response) {
+                console.log(response)
+                alert('Error')
+            });
+    }
     const [img, setImg] = useState(false)
-
 
     let savebtn = (
         <>
@@ -57,17 +52,20 @@ function Profile() {
             headers: {
                 'Content-type': 'multipart/form-data'
             }
-        }).then(res => console.log(res))
+        }).then(
+            dispatch(getProfile)
+        )
     }
     return (
+        
         <div class="form-container container-fluid p-0">
             <div class="row cover-img">
-                <img src={profile.cover_image}class="cover" />
+                <img src={props.cover_img} class="cover" />
 
             </div>
             <div class="imageWrapper">
                 
-                <img class="profile" src={profile.profile_image} />
+                <img class="profile" src={props.profile_image} />
 
             </div>
             <form class="main">

@@ -56,8 +56,8 @@ return (
             <div class='img'>
                 <img src={props.profile_pic}  />
             </div>
-            <a href={`/userProfile/${props.other_profile_id}`}>
-            <div class='text'>
+            <a class='text'href={`/userProfile/${props.other_profile_id}`}>
+            <div>
                 {props.f_name + ' ' + props.l_name}
             </div>
             </a>

@@ -1,14 +1,14 @@
 .main{
     width: 100%;
     height: min-content;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
     border-radius: 10px;
     margin-top:10px;
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 20px;
+    padding-left: 30px;
 }
 
 .main form{

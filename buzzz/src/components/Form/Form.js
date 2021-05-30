@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {resetFormHandler, OnChangeHandler} from '../../redux/actions/ProfileForm'
 import {setFormError} from '../../redux/actions/error'
+
 let ContactForm = props => {
 
     const dispatch = useDispatch()
@@ -11,9 +12,7 @@ let ContactForm = props => {
         const valid = handleValidation()
         if (valid) {
             props.onSubmit(formState)
-            dispatch(resetFormHandler())
-    
-            alert("Form submitted");
+            dispatch(resetFormHandler())    
         }
     }
     const handleChange = (e) => {

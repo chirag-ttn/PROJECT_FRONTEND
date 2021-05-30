@@ -1,5 +1,5 @@
 const initialState = {
-    profile: {},
+    profile: '',
     getProfileError: null,
     getProfileLoading: true,
 }

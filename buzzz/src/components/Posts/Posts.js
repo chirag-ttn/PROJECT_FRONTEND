@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts,getFlaggedPosts } from '../../redux/actions/Posts'
+import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 
 export default function Posts(props) {
@@ -13,36 +13,16 @@ export default function Posts(props) {
     const [like, setlike] = useState(false)
     const [dislike, setdislike] = useState(false)
     const [flag, setflag] = useState(false)
-    const [comment, setComment] = useState('')
-
+    const [comment, setComment] = useState(null)
+    const [errorComment, seterrorComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [showFlag, setShowFlag] = useState(false)
-
+    const {islike,isdislike} = props;
     const dispatch = useDispatch()
-    const verifyLikeStatus = () => {
-        axios.get('http://localhost:4444/posts/verifylikeStatus', {
-            params: {
-                user_profile_id: profile_id,
-                post_id: post_id
-            }
-        })
-            .then(res => setlike(res.data))
-            .catch(err => console.log(err))
-    }
-    const verifyDislikeStatus = () => {
-        axios.get('http://localhost:4444/posts/verifyDislikeStatus', {
-            params: {
-                user_profile_id: profile_id,
-                post_id: post_id
-            }
-        })
-            .then(res => setdislike(res.data))
-            .catch(err => console.log(err))
-    }
-    useEffect(() => {
-        verifyLikeStatus()
-        verifyDislikeStatus()
-    }, [])
+    useEffect(()=>{
+        setlike(islike)
+        setdislike(isdislike)
+    },[islike,isdislike])
     const likeHandler = () => {
         setlike(true)
         setdislike(false)
@@ -87,16 +67,24 @@ export default function Posts(props) {
         setComment(event.target.value)
     }
     const commentHandler = () => {
-        let commentStore = comment
-        setComment('')
-        setShowComment(true)
-        axios.post('http://localhost:4444/posts/createComment', {
-            profile_id: props.current_user,
-            post_id: post_id,
-            comment: commentStore
-        })
-            .then(getPosts(dispatch))
-            .catch(err => console.log(err))
+        if (comment == null) {
+            console.log(comment)
+            seterrorComment(true)
+        }
+        else {
+            seterrorComment(false)
+            let commentStore = comment
+            setComment('')
+            setShowComment(true)
+            axios.post('http://localhost:4444/posts/createComment', {
+                profile_id: props.current_user,
+                post_id: post_id,
+                comment: commentStore
+            })
+                .then(getPosts(dispatch))
+                .catch(err => console.log(err))
+        }
+
     }
     const flagHandler = () => {
         setflag(true)
@@ -118,7 +106,7 @@ export default function Posts(props) {
             .catch(err => console.log(err))
 
     }
-    const approveFlaggedPost = () =>{
+    const approveFlaggedPost = () => {
         axios.post('http://localhost:4444/posts/approveFlaggedPost', {
             post_id: post_id
         })
@@ -126,7 +114,7 @@ export default function Posts(props) {
             .catch(err => console.log(err))
 
     }
-    const removeFlaggedPost = () =>{
+    const removeFlaggedPost = () => {
         axios.post('http://localhost:4444/posts/removeFlaggedPost', {
             post_id: post_id
         })
@@ -150,22 +138,22 @@ export default function Posts(props) {
             <div class="card post-container">
                 <div class='d-flex justify-content-center flex-column col-md-12 '>
                     {showFlag ?
-                    <div className='flag-modal'>
-                        {flag ?
-                            <button onClick={unflagHandler} type="button" className="clickedBtns text-danger">
-                                <span className="span-comment">
-                                    <i class="fa fa-flag"></i>
+                        <div className='flag-modal'>
+                            {flag ?
+                                <button onClick={unflagHandler} type="button" className="clickedBtns text-danger">
+                                    <span className="span-comment">
+                                        <i class="fa fa-flag"></i>
                                         &nbsp;UnFlag
                                     </span>
-                            </button> :
+                                </button> :
 
-                            <button onClick={flagHandler} type="button" className="styledBtns text-primary">
-                                <span className="span-comment">
-                                    <i class="fa fa-flag"></i>
+                                <button onClick={flagHandler} type="button" className="styledBtns text-primary">
+                                    <span className="span-comment">
+                                        <i class="fa fa-flag"></i>
                                         &nbsp;Flag
                                     </span>
-                            </button> }
-                            </div>: null}
+                                </button>}
+                        </div> : null}
                     <div id='post-header' class="d-flex justify-content-between p-2">
                         <div class="d-flex flex-row align-items-center p-2">
                             <img src={props.val.author_id.profile_image} width="50" class="rounded-circle" />
@@ -176,19 +164,19 @@ export default function Posts(props) {
                         <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">
                             <Moment fromNow>{props.val.date}</Moment>
                         &nbsp;
-                            {!props.moderatorView?
-                            <button style={{ "border": "none", "background": "transparent" }} onClick={showFlagged}>
-                                <i class="fa fa-ellipsis-h"></i>
-                            </button>
-                            :
-                            <>
-                                <button className='btn' style={{ "border": "none", "background": "transparent",'color':'green' }} onClick={approveFlaggedPost}>
-                                <i class="far fa-check-circle"></i>
+                            {!props.moderatorView ?
+                                <button style={{ "border": "none", "background": "transparent" }} onClick={showFlagged}>
+                                    <i class="fa fa-ellipsis-h"></i>
                                 </button>
-                                <button className='btn' style={{ "border": "none", "background": "transparent",'color':'red' }} onClick={removeFlaggedPost}>
-                                <i class="fas fa-ban"></i>
-                            </button>
-                            </>
+                                :
+                                <>
+                                    <button className='btn' style={{ "border": "none", "background": "transparent", 'color': 'green' }} onClick={approveFlaggedPost}>
+                                        <i class="far fa-check-circle"></i>
+                                    </button>
+                                    <button className='btn' style={{ "border": "none", "background": "transparent", 'color': 'red' }} onClick={removeFlaggedPost}>
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </>
                             }
                         </small>
                         </div>
@@ -196,7 +184,8 @@ export default function Posts(props) {
 
                     </div>
                     <p class="p-2 ml-2 my-0" style={{ "font-size": "18px" }}>{props.val.description}</p>
-                    <img className="p-2 post-image" src={props.val.imageUrl} />
+                    {props.val.imageUrl!=='no-image'?
+                    <img className="p-2 post-image" src={props.val.imageUrl} />:null}
 
                     <div class="p-2 ml-2">
                         <div className='d-flex justify-content-between align-items-center'>
@@ -219,7 +208,7 @@ export default function Posts(props) {
 
 
                         <div class="">
-                            
+
                             <div class="row">
                                 <div class='btn-container'>
                                     {like
@@ -279,8 +268,9 @@ export default function Posts(props) {
                                 <input type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
                                 <button className='btn-comment btn btn-primary' onClick={commentHandler}>
                                     add
-                                    </button>
+                                </button>
                             </div>
+                                {errorComment?<span className={'text-danger'}>Please fill the comment</span>:null}
                         </div>
                     </div>
                 </div>

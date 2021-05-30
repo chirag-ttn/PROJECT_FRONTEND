@@ -6,6 +6,7 @@ const initialState = {
     f_name:'',
     l_name:'',
     profile_pic:'',
+    role:'',
     profile_id:''
 }
 export default (state = initialState,action)=>{
@@ -23,7 +24,8 @@ export default (state = initialState,action)=>{
             l_name:payload.l_name,
             email:payload.email,
             profile_pic:payload.profile_pic,
-            profile_id:payload.profile_id
+            profile_id:payload.profile_id,
+            role:payload.role
         };
         default:
             return state

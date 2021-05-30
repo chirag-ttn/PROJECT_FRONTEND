@@ -21,9 +21,11 @@ function Feeds() {
 
     const post = useSelector(state => state.postReducer)
     const profile = useSelector(state => state.profileReducer)
+    const {role} = useSelector(state=>state.authReducer)
     // console.log(post.posts[0].author_id,profile.profile.user_id)
 
     const current_user_profile = profile.profile
+    console.log(current_user_profile)
     const loading = profile.getProfileLoading
 
     const [sf, setsf] = useState(1)
@@ -93,11 +95,11 @@ function Feeds() {
                             </div>
                             <div class='row'>
                                 <div class='col-md-12 toggle-switch-container'>
-                                    <p class='col-md-2'>Top</p>
+                                    <p class='col-md-2'>Sort By: <span>Top</span></p>
                                     <div className=' col-md-5 d-flex'>
 
-
-                                        {post.moderatorView ?
+                                        {role=='admin'?
+                                        post.moderatorView ?
                                             <label onClick={switchModeratorViewOff} class="switch ">
                                                 <input type="checkbox" />
                                                 <span class="slider round">Moderator View OFF</span>
@@ -105,7 +107,7 @@ function Feeds() {
                                             <label onClick={switchModeratorViewOn} class="switch ">
                                                 <input type="checkbox" />
                                                 <span class="slider round">Moderator View ON</span>
-                                            </label>}
+                                            </label>:null}
                                     </div>
                                 </div>
                             </div>
