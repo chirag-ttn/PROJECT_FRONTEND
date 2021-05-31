@@ -21,7 +21,7 @@ export const getFlaggedPostSuccess = (data) => {
 export const getPostFailure = (err) => {
     return {
         type: "GET_POST_FAILURE",
-        payload:err
+        payload: err
     }
 }
 
@@ -42,36 +42,44 @@ export const createPostSuccess = (data) => {
 export const createPostFailure = (err) => {
     return {
         type: "CREATE_POST_FAILURE",
-        payload:err
+        payload: err
     }
 }
 
 export const getPosts = (dispatch) => {
-    
+
         dispatch(getPostStart())
         axios.get('http://localhost:4444/posts/getAllPosts')
         .then(res=>dispatch(getPostSuccess(res)))
         .catch(err=>dispatch(getPostFailure(err)))
-    
+
+}
+export const getPostsPerPage = (dispatch) => {
+    return (pageCount,postCount) => {
+        dispatch(getPostStart())
+        axios.get(`http://localhost:4444/posts/getPosts`, { params: { pageCount,postCount} })
+            .then(res => dispatch(getPostSuccess(res)))
+            .catch(err => dispatch(getPostFailure(err)))
+    }
 }
 export const getFlaggedPosts = (dispatch) => {
-    
+
     dispatch(getPostStart())
     axios.get('http://localhost:4444/posts/getFlaggedPosts')
-    .then(res=>dispatch(getFlaggedPostSuccess(res)))
-    .catch(err=>dispatch(getPostFailure(err)))
+        .then(res => dispatch(getFlaggedPostSuccess(res)))
+        .catch(err => dispatch(getPostFailure(err)))
 
 }
 export const createPost = (data) => {
     return (dispatch) => {
         dispatch(createPostStart())
-        axios.post('http://localhost:4444/posts/createPost',data,
+        axios.post('http://localhost:4444/posts/createPost', data,
             {
                 headers: {
                     'Content-type': 'multipart/form-data'
                 }
             }
-        ).then(res=>{
+        ).then(res => {
             dispatch(createPostSuccess(res.data))
         })
     }

@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
 import { useDispatch, useSelector } from 'react-redux'
+import {getPostsPerPage} from '../../redux/actions/Posts'
 import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 
@@ -13,10 +14,12 @@ export default function Posts(props) {
     const [like, setlike] = useState(false)
     const [dislike, setdislike] = useState(false)
     const [flag, setflag] = useState(false)
-    const [comment, setComment] = useState('')
+    const [comment, setComment] = useState(null)
     const [errorComment, seterrorComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [showFlag, setShowFlag] = useState(false)
+
+    const commentInput = useRef(null)
     const { islike, isdislike, isflagged } = props;
     const dispatch = useDispatch()
     useEffect(() => {
@@ -32,7 +35,7 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const unlikeHandler = () => {
@@ -41,7 +44,7 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
 
     }
@@ -52,7 +55,7 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const undislikeHandler = () => {
@@ -61,28 +64,27 @@ export default function Posts(props) {
             user_profile_id: profile_id,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const commentChangeHandler = (event) => {
         setComment(event.target.value)
     }
     const commentHandler = () => {
-        console.log('COMMENT==============>',comment)
-        if (comment === '') {
+        if (comment === null) {
             seterrorComment(true)
         }
         else {
             seterrorComment(false)
             let commentStore = comment
-            setComment('')
+            setComment(null)
             setShowComment(true)
             axios.post('http://localhost:4444/posts/createComment', {
                 profile_id: props.current_user,
                 post_id: post_id,
                 comment: commentStore
             })
-                .then(getPosts(dispatch))
+                .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
                 .catch(err => console.log(err))
         }
 
@@ -93,7 +95,7 @@ export default function Posts(props) {
             profile_id: props.current_user,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
 
     }
@@ -103,7 +105,7 @@ export default function Posts(props) {
             profile_id: props.current_user,
             post_id: post_id
         })
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
 
     }
@@ -133,6 +135,7 @@ export default function Posts(props) {
     const showFlagged = () => {
         setShowFlag(!showFlag)
     }
+
     let ButtonBox = (
         <div class="row">
             <div class='btn-container'>
@@ -170,10 +173,11 @@ export default function Posts(props) {
                 }
                 <button type="button" className="styledBtns">
                     <span className="span-comment" onClick={() => {
+                        commentInput.current.focus()
                     }}>
                         <i class="fas fa-comment-alt"></i>
-                                        comment
-                                    </span>
+                            comment
+                        </span>
                 </button>
 
             </div>
@@ -192,12 +196,12 @@ export default function Posts(props) {
     )
     let createComment = (
         <>
-            <div class="comment-input">
-                <input type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
-                <button className='btn-comment btn btn-primary' onClick={commentHandler}>
+            <form class="comment-input">
+                <input ref={commentInput} type="text" class="form-control" placeholder="write a comment...." onChange={commentChangeHandler} required />
+                <button type='reset' className='btn-comment btn btn-primary' onClick={commentHandler}>
                     add
-                                </button>
-            </div>
+                </button>
+            </form>
             {errorComment ? <span className={'text-danger'}>Please fill the comment</span> : null}
         </>
     )
@@ -283,14 +287,14 @@ export default function Posts(props) {
                                     <hr />
                                     {showcomment}
                                     {createComment}
-                                    </> :
-                                    <>
+                                </> :
+                                <>
                                     {showcomment}
-                                    </>
-                                }
+                                </>
+                            }
 
                             {/* show comments */}
-                            
+
                             {/* createComments */}
                         </div>
                     </div>

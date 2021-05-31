@@ -34,6 +34,8 @@ export default function Suggestions(props) {
                         profile_pic={val.profile_image}
                         other_profile_id={val._id}
                         status={props.status}
+                        pageNumber={props.pageNumber}
+                        postCount={props.postCount}
                     />
                 })}
    

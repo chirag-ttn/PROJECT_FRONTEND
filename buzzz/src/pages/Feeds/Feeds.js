@@ -7,38 +7,49 @@ import Navbar from '../../components/Navbar/Navbar'
 import Suggestions from '../../components/Suggestions/suggestions'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import Posts from '../../components/Posts/Posts'
-import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
+import { getPosts, getFlaggedPosts, getPostsPerPage } from '../../redux/actions/Posts'
 import { getProfile } from '../../redux/actions/Profile'
 import './Feeds.css'
 
 function Feeds() {
+
     const dispatch = useDispatch()
     useEffect(() => {
         getProfile(dispatch)()
-        getPosts(dispatch)
         getUser(dispatch)()
     }, [])
 
+    const [pageNumber, setPageNumber] = useState(0)
+    let [feed, setFeed] = useState([])
+
+    const postCount = 5;
+
     const post = useSelector(state => state.postReducer)
     const profile = useSelector(state => state.profileReducer)
-    const {role} = useSelector(state=>state.authReducer)
+    const { role } = useSelector(state => state.authReducer)
     // console.log(post.posts[0].author_id,profile.profile.user_id)
-
     const current_user_profile = profile.profile
-    console.log(current_user_profile)
     const loading = profile.getProfileLoading
+    useEffect(() => {
+        getPostsPerPage(dispatch)(pageNumber, postCount)
+        setFeed([...feed, ...post.posts])
+    }, [pageNumber])
 
+
+    const loadMoreHandler = () => {
+        setPageNumber(pageNumber + 1)
+    }
     const [sf, setsf] = useState(1)
 
     let SfSidebar = (<>
         <Suggestions heading={'suggestions'} suggestions={current_user_profile.suggestions} id={current_user_profile._id} status={0} />
         <br />
-        <Suggestions heading={'friends'} suggestions={current_user_profile.friends} id={current_user_profile._id} status={1} />
+        <Suggestions heading={'friends'} suggestions={current_user_profile.friends} id={current_user_profile._id} status={1} pageNumber={pageNumber} postCount={postCount} />
     </>)
     let RrSidebar = (<>
-        <Suggestions heading={'requests'} suggestions={current_user_profile.requests} id={current_user_profile._id} status={2} />
+        <Suggestions heading={'requests'} suggestions={current_user_profile.requests} id={current_user_profile._id} status={2} pageNumber={pageNumber} postCount={postCount} />
         <br />
-        <Suggestions heading={'requested'} suggestions={current_user_profile.requested} id={current_user_profile._id} status={3} />
+        <Suggestions heading={'requested'} suggestions={current_user_profile.requested} id={current_user_profile._id} status={3}  />
     </>
     )
     const toggleHandler = () => {
@@ -74,7 +85,7 @@ function Feeds() {
         return {
             islike: islike,
             isdislike: isdislike,
-            isflagged:isflagged
+            isflagged: isflagged
         }
     }
     //set isLike/isDislike in every post
@@ -82,11 +93,15 @@ function Feeds() {
         getFlaggedPosts(dispatch)
     }
     const switchModeratorViewOff = () => {
-        getPosts(dispatch)
+        getPostsPerPage(dispatch)(pageNumber, postCount)
+
+    }
+    if (feed.length === 0) {
+        feed = [...post.posts]
     }
     return (
         <>
-            <div class='section'>
+            <div class='feed-section'>
                 <Navbar profile_image={current_user_profile.profile_image} username={current_user_profile.firstname + ' ' + current_user_profile.lastname} onToggle={toggleHandler} />
                 <div class="feed-container">
                     <div class="left-section">
@@ -101,26 +116,27 @@ function Feeds() {
                             </div>
                             <div class='row'>
                                 <div class='col-md-12 toggle-switch-container'>
-                                    <p class='col-md-2'>Sort By: <span>Top</span></p>
+                                    <p class='col-md-2'></p>
                                     <div className=' col-md-5 d-flex'>
 
-                                        {role=='admin'?
-                                        post.moderatorView ?
-                                            <label onClick={switchModeratorViewOff} class="switch ">
-                                                <input type="checkbox" />
-                                                <span class="slider round">Moderator View OFF</span>
-                                            </label> :
-                                            <label onClick={switchModeratorViewOn} class="switch ">
-                                                <input type="checkbox" />
-                                                <span class="slider round">Moderator View ON</span>
-                                            </label>:null}
+                                        {role == 'admin' ?
+                                            post.moderatorView ?
+                                                <label onClick={switchModeratorViewOff} class="switch ">
+                                                    <input type="checkbox" />
+                                                    <span class="slider round">Moderator View OFF</span>
+                                                </label> :
+                                                <label onClick={switchModeratorViewOn} class="switch ">
+                                                    <input type="checkbox" />
+                                                    <span class="slider round">Moderator View ON</span>
+                                                </label> : null}
                                     </div>
                                 </div>
                             </div>
                             <div class='row'>
                                 <div class='col-md-12'>
                                     <div class='scroll'>
-                                        {post.posts.map(val => {
+                                        {/* {post.posts?} */}
+                                        {feed.map(val => {
                                             let { islike, isdislike, isflagged } = reserved_post_state(val)
                                             return <Posts
                                                 key={val._id}
@@ -134,10 +150,17 @@ function Feeds() {
                                                 like_count={val.likes.length}
                                                 dislike_count={val.dislikes.length}
                                                 flag_count={val.flagged}
+                                                postCount ={5}
+                                                pageCount = {pageNumber}
                                             />
 
                                         })}
-
+                                        {!post.moderatorView?
+                                        <div className='load-more'>
+                                            {feed.length % 5 !== 0 ?
+                                                <p className='post-loaded'>All posts are loaded</p> :
+                                                <button className=' btn btn-dark' onClick={loadMoreHandler}>Load More</button>}
+                                        </div>:null}
                                     </div>
                                 </div>
                             </div>

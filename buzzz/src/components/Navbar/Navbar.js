@@ -9,20 +9,27 @@ import Suggestions from '../../components/Suggestions/suggestions'
 import NotificationModal from '../NotificationModal/NotificationModal'
 import { useSelector } from 'react-redux'
 import { getProfile } from '../../redux/actions/Profile'
+import { useHistory, useLocation } from 'react-router-dom'
 function Navbar(props) {
     const dispatch = useDispatch()
     useEffect(() => {
         getUser(dispatch)()
         getProfile(dispatch)
     }, [getUser, getProfile])
-
+    const history = useHistory(null)
+    const location = useLocation(null)
     const state = useSelector(state => state.authReducer)
     const profileState = useSelector(state => state.profileReducer)
     const { profile, getProfileLoading } = profileState
-    console.log(props)
+    const clickedFeedBtn = () => {
+        if(location.pathname.includes('userProfile'))
+        {
+            history.push('/feeds')
+        }
+    }
     return (
         <>
-            <div class='section'>
+            <div class='navbar-section'>
                 <div class="container-fluid p-0">
                     <nav class="navbar-fixed-top navbar-light bg-light section-nav">
                         <div class="d-flex justify-content-between container-fluid p-0">
@@ -46,7 +53,7 @@ function Navbar(props) {
                                 {profile === '' ? null :
                                     <>
                                         <NotificationModal profile={profile} getProfileLoading={getProfileLoading} />
-                                        <a href='feeds'><button class="btn btn-dark" >Feeds</button></a>
+                                        <a href='feeds'><button onClick={clickedFeedBtn} class="btn btn-dark" >Feeds</button></a>
                                     </>
                                 }
 

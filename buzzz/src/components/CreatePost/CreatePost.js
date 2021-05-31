@@ -4,15 +4,16 @@ import { onTextChangeHandler, onFileChangeHandler } from '../../redux/actions/Po
 import { useDispatch } from 'react-redux'
 import { createPost } from '../../redux/actions/Posts'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState,useRef } from 'react'
 
 export default function CreatePosts(props) {
-    console.log(props)
+    // console.log(props)
     let formData = new FormData()
     const dispatch = useDispatch()
     const [text, setText] = useState(null)
     const [file, setFile] = useState(null)
     const [error, setError] = useState(false)
+    const postInput = useRef(null)
     const handleTextChange = (event) => {
         setText(event.target.value)
     }
@@ -21,15 +22,17 @@ export default function CreatePosts(props) {
     }
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (text === null && file == null) {
+        console.log("POST++++++++++++++++++++>",text,file,error)
+        if (text === null && file === null) {
             setError(true)
         }
         else {
             formData.append('text', text)
             formData.append('profile_id', props.profile_id)
             formData.append('image', file)
+            postInput.current.value = null
             createPost(formData)(dispatch)
-            setText('')
+            setText(null)
             setFile(null)
         }
 
@@ -42,9 +45,9 @@ export default function CreatePosts(props) {
                 <div className='row'>
                     <Img class="img" src={props.picture} />
                     <form >
-                        <input class='addpost' id='text' name='text' type='text' onChange={handleTextChange} placeholder="What's on your mind, Chirag ?" />
+                        <input class='addpost' ref={postInput} id='text' name='text' type='text' onChange={handleTextChange} placeholder="What's on your mind, Chirag ?" />
                         <div class='file'>
-                            <input id='file' name='img' type='file' onChange={handleFileChange} hidden />
+                            <input id='file'  name='img' type='file' onChange={handleFileChange} hidden />
                             <label for='file' ><i style={{ 'color': 'green' }} class="fas fa-images"></i> Photos</label>
                         </div>
 

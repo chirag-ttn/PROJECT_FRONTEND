@@ -20,9 +20,15 @@
   justify-content: center;
 }
 .scroll{
-    height:100vh;
+    height:60vh;
     overflow-y: scroll;
 
+}
+.load-more{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0px;
 }
 .toggle-switch-container{
   display: flex;
@@ -32,8 +38,8 @@
     display: none;
   }
   
-.section{
-height: 90%;
+.feed-section{
+height: 100vh;
 overflow-y: hidden;
 }
 .switch {

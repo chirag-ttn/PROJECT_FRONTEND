@@ -6,11 +6,28 @@
     width: 40%;
 
 }
-.section{
-    height: 10%;
+.navbar-section{
+    height: 10vh;
+
+}
+.navbar-section > div{
+    height: 100%;
+
+}
+.navbar-section > div >nav{
+ display: flex;
+ align-items: center;
+}
+.brand{
+    display: flex;
+    
+    align-items: center;
 }
 .right-links p{
     margin: 0;
+}
+.section-nav{
+    height: 100%;
 }
 .right-links img{
     height: 40px;

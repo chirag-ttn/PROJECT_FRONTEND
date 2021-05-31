@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux'
 import './suggestion.css'
 import {Link} from 'react-router-dom'
 import {getProfile} from '../../../redux/actions/Profile'
-import { getPosts } from '../../../redux/actions/Posts'
+import { getPostsPerPage } from '../../../redux/actions/Posts'
 
 export default function Suggestion(props) {
     const dispatch = useDispatch()
@@ -20,7 +20,7 @@ export default function Suggestion(props) {
     const friendRemoveHandler = () => {
         axios.get('http://localhost:4444/users/removeFriend', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
             .then(getProfile(dispatch))
-            .then(getPosts(dispatch))
+            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const FriendBtn = (<>
@@ -30,7 +30,7 @@ export default function Suggestion(props) {
 const RequestAcceptHandler = () => {
     axios.get('http://localhost:4444/users/addFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
     .then(getProfile(dispatch))
-    .then(getPosts(dispatch))
+    .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
     .catch(err => console.log(err))
 }
 const RequestRejectHandler = () => {
