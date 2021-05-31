@@ -2,21 +2,13 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import './Notification.css'
 import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import Suggestions from '../Suggestions/suggestions'
-import { getProfile } from '../../redux/actions/Profile'
 
 
-export default () => {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        getProfile(dispatch)
-    },[getProfile])
+export default (props) => {
     const [smShow, setSmShow] = useState(false);
-    
-    const state= useSelector(state => state.profileReducer)
-    let {profile,getProfileLoading} = state
-    console.log(state,profile)
+    console.log(props)
+    // const state= useSelector(state => state.profileReducer)
     return (
         <>
             <Button className="notificationButton" onClick={() => setSmShow(true)}>
@@ -30,7 +22,7 @@ export default () => {
                 aria-labelledby="example-modal-sizes-title-sm"
             >
                 <div className="notificationCount">
-                    <p>{!getProfileLoading?profile.requests.length:0}</p>
+                    <p>{!props.getProfileLoading?props.profile.requests.length:0}</p>
                 </div>
                 
                 <Modal.Header closeButton>
@@ -39,7 +31,7 @@ export default () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
-                    <Suggestions heading={'requests'} suggestions={profile.requests} id={profile._id} status={2} />
+                    <Suggestions heading={'requests'} suggestions={props.profile.requests} id={props.profile._id} status={2} />
 
                 </Modal.Body>
             </Modal>

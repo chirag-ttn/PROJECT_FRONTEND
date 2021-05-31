@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import Form from '../Form/Form'
 import axios from 'axios'
 import './Createprofile.css'
+
 import { getUser } from '../../redux/actions/auth'
 import {getProfile} from '../../redux/actions/Profile'
 
 function Profile(props) {
+    const history = useHistory()
     const dispatch = useDispatch()
     const submit = values => {
 
@@ -18,6 +21,7 @@ function Profile(props) {
         })
             .then(function (response) {
                 console.log(response)
+                history.push('/feeds')
                 getProfile(dispatch)()
             })
             .catch(function (response) {

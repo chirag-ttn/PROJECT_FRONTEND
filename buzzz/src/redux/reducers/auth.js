@@ -7,7 +7,7 @@ const initialState = {
     l_name:'',
     profile_pic:'',
     role:'',
-    profile_id:''
+    profile_id:null
 }
 export default (state = initialState,action)=>{
     switch(action.type)

@@ -8,15 +8,18 @@ import './Navbar.css'
 import Suggestions from '../../components/Suggestions/suggestions'
 import NotificationModal from '../NotificationModal/NotificationModal'
 import { useSelector } from 'react-redux'
+import { getProfile } from '../../redux/actions/Profile'
 function Navbar(props) {
     const dispatch = useDispatch()
     useEffect(() => {
         getUser(dispatch)()
-    }, [getUser])
+        getProfile(dispatch)
+    }, [getUser, getProfile])
 
     const state = useSelector(state => state.authReducer)
-
-
+    const profileState = useSelector(state => state.profileReducer)
+    const { profile, getProfileLoading } = profileState
+    console.log(props)
     return (
         <>
             <div class='section'>
@@ -29,20 +32,25 @@ function Navbar(props) {
                             <div class="right-links">
 
                                 <img class="user-profile-pic" src={props.profile_image} alt="logo" />
-                                <a class='text' href={`/userProfile/${state.profile_id}`}>
-                                    <p>{props.username}</p>
-                                </a>
+                                <p>
+                                    {profile === '' ? props.username :
+                                        <a class='text' href={`/userProfile/${state.profile_id}`}>
+                                            {props.username}
+                                        </a>
+                                    }
+                                </p>
+
 
 
                                 <i class="fab fa-facebook-messenger" />
-                                {/* <button onClick={props.onToggle}>
+                                {profile === '' ? null :
+                                    <>
+                                        <NotificationModal profile={profile} getProfileLoading={getProfileLoading} />
+                                        <a href='feeds'><button class="btn btn-dark" >Feeds</button></a>
+                                    </>
+                                }
 
-                                    <i class="far fa-bell" />
-                                </button> */}
-                                    
-                                        {/* <NotificationModal /> */}
 
-                                <a href='feeds'><button class="btn btn-dark" >Feeds</button></a>
                                 <button class="btn btn-danger" onClick={() => dispatch(actions.removeToken())}>Logout</button>
                             </div>
                         </div>

@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {resetFormHandler, OnChangeHandler} from '../../redux/actions/ProfileForm'
 import {setFormError} from '../../redux/actions/error'
+import {useLocation} from 'react-router-dom'
 
 let ContactForm = props => {
-
+    const location = useLocation()
     const dispatch = useDispatch()
     const formState = useSelector(state => state.formReducer)
     const error = useSelector(state=>state.errorReducer)
@@ -175,7 +176,10 @@ let ContactForm = props => {
                 </div>
             </div>
             <div className="form col-md-8 d-flex justify-content-around">
-                <button type="submit" className="btn btn-primary form-group col-md-3">Save</button>
+                <button type="submit" className="btn btn-primary form-group col-md-3">
+                    {location.pathname==='/updateProfile'?
+                    'Update':'Save'}
+                    </button>
                 <button type="button" onClick={()=>dispatch(resetFormHandler())} className="btn btn-outline-primary form-group col-md-3">Reset All</button>
             </div>
         </form>

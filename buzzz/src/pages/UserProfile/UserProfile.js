@@ -15,8 +15,9 @@ function UserProfile(props) {
     useEffect(() => {
         getUserProfile(dispatch)(id)
     }, [])
-    
+
     const state = useSelector(state => state.profileReducer)
+    console.log(state)
     const current_user_profile_id = useSelector(state=>state.authReducer).profile_id
     const friend_user_profile = state.profile
     const loading = state.getProfileLoading
@@ -28,7 +29,7 @@ function UserProfile(props) {
             <div className={Classes.container}>
                 <img className={Classes.bgImg} />
                 <div className={Classes.header}>
-                    <Navbar />
+                    <Navbar profile_image={state.profile.profile_image} username={state.profile.firstname+' '+state.profile.lastname} />
                 </div>
 
                 <div className={Classes.section}>
