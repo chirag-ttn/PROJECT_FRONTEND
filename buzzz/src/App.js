@@ -2,11 +2,12 @@ import './App.css';
 import Login from './pages/Login/Login'
 import Feeds from './pages/Feeds/Feeds'
 import CreateProfile from './pages/CreateProfile/CreateProfile'
+import UpdateProfile from './pages/updateProfile/updateProfile'
 import UserProfile from './pages/UserProfile/UserProfile'
-import { Redirect, Switch, Route } from 'react-router-dom'
-import {getUsers} from './redux/actions/users'
-import { useSelector,useDispatch } from 'react-redux'
-import {getProfile} from './redux/actions/Profile'
+import { Redirect, Switch, Route, useParams } from 'react-router-dom'
+import { getUsers } from './redux/actions/users'
+import { useSelector, useDispatch } from 'react-redux'
+import { getProfile } from './redux/actions/Profile'
 import axios from 'axios'
 import { useEffect } from 'react';
 
@@ -20,15 +21,18 @@ axios.interceptors.request.use(config => {
 });
 function App() {
   const dispatch = useDispatch()
-  useEffect(()=>{
-    getUsers(dispatch)
-  },[getUsers])
-  const isAuth = useSelector(state => state.authReducer.auth)
+  
+  
+  const isAuth = useSelector(state => state.authReducer)
+  const profile = isAuth.profile_id
+
   // console.log(isAuth)
+  console.log(profile==='')
   const ProtectedRoutes = (<>
     <Switch>
+      
       <Route path='/createProfile'>
-        <CreateProfile />
+        <CreateProfile />:
       </Route>
       <Route path="/feeds">
         <Feeds />
@@ -36,8 +40,16 @@ function App() {
       <Route path='/userProfile/:id'>
         <UserProfile />
       </Route>
+      <Route path='/updateProfile'>
+        <UpdateProfile />
+      </Route>
       <Route exact path='/'>
-        {isAuth ? <Redirect to='/createProfile' /> : <Login />}
+        {isAuth.auth ?
+          profile===''?
+          <Redirect to='/createProfile' /> :
+          <Redirect to='/feeds' />:
+          <Login />
+        }
       </Route>
     </Switch>
   </>)
@@ -50,7 +62,7 @@ function App() {
     </>
   )
   return (
-    isAuth ? ProtectedRoutes : unProtectedRoutes
+    isAuth.auth ? ProtectedRoutes : unProtectedRoutes
   );
 }
 

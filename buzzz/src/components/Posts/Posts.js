@@ -13,7 +13,7 @@ export default function Posts(props) {
     const [like, setlike] = useState(false)
     const [dislike, setdislike] = useState(false)
     const [flag, setflag] = useState(false)
-    const [comment, setComment] = useState(null)
+    const [comment, setComment] = useState('')
     const [errorComment, seterrorComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [showFlag, setShowFlag] = useState(false)
@@ -68,8 +68,8 @@ export default function Posts(props) {
         setComment(event.target.value)
     }
     const commentHandler = () => {
-        if (comment == null) {
-            console.log(comment)
+        console.log('COMMENT==============>',comment)
+        if (comment === '') {
             seterrorComment(true)
         }
         else {

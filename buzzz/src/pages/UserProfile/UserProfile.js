@@ -6,7 +6,7 @@ import Classes from './UserProfile.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import DisplayProfile from '../../components/displayProfile/displayProfile'
-import { getUserProfile } from '../../redux/actions/Profile'
+import { getUserProfile,getProfile } from '../../redux/actions/Profile'
 import { useParams } from 'react-router'
 function UserProfile(props) {
     const {id} = useParams()
@@ -15,30 +15,13 @@ function UserProfile(props) {
     useEffect(() => {
         getUserProfile(dispatch)(id)
     }, [])
-
+    
     const state = useSelector(state => state.profileReducer)
-    const current_user_profile = state.profile
-    const suggestions = current_user_profile.suggestions
-    const friends = current_user_profile.friends
+    const current_user_profile_id = useSelector(state=>state.authReducer).profile_id
+    const friend_user_profile = state.profile
     const loading = state.getProfileLoading
 
 
-    console.log(state)
-    let Sidebar =
-        (<>
-            <div className="row">
-                <Suggestions heading={"Suggestions"}
-                    suggestions={suggestions}
-                    id={current_user_profile._id}
-                />
-            </div>
-            <div className="row">
-                <Suggestions heading={"Friends"}
-                    suggestions={friends}
-                    id={current_user_profile._id}
-                />
-            </div>
-        </>)
     
     return (
         <>  {loading?'loading...':
@@ -50,7 +33,7 @@ function UserProfile(props) {
 
                 <div className={Classes.section}>
                     <div className={Classes.main}>
-                        <DisplayProfile profile={current_user_profile} />
+                        <DisplayProfile userProfileId={current_user_profile_id} friendProfile={friend_user_profile} />
                     </div>
                     <div className={Classes.sidebar}>
                         

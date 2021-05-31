@@ -1,0 +1,30 @@
+.notificationContainer{
+  position: absolute !important;
+  top:50px;
+  height: fit-content;
+  width: 25% !important;
+  right: 0;
+  box-sizing: border-box;
+
+}
+.notificationButton{
+  position: relative;
+}
+
+.notificationCount{
+  position: absolute;
+  border-radius: 50%;
+  border:1px solid white;
+  height: 25px;
+  width: 25px;
+  background-color:#0979FA;
+  color: white;
+  left: -10px;
+  font-weight: bold;
+  top:-10px;
+
+}
+.notificationCount p{
+  text-align: center;
+  font-size: x-small;
+}

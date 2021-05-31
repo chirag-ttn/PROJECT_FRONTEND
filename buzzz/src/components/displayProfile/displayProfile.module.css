@@ -1,4 +1,4 @@
-body{
+/* body{
 	margin:0;
 	background-color: #f3f2ef;
    font-family: -apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Fira Sans,Ubuntu,Oxygen,Oxygen Sans,Cantarell,Droid Sans,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Lucida Grande,Helvetica,Arial,sans-serif;	
@@ -6,8 +6,8 @@ body{
    align-items: center;
    justify-content: center;
    min-height: 100vh;
-}
-.name{
+} */
+.name{ 
     font-size: 30px;
     font-weight: bold;
 }
@@ -119,6 +119,24 @@ margin-bottom: -4px;
     font-size: 20px;
     font-weight: bold;
     
+}
+.butCancel{
+    margin: 20px 0px;
+    padding: 20px;
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 30px;
+    /* background-color: blue; */
+    height: 30px;
+    color: blue;
+    font-size: 20px;
+    font-weight: bold;
+}
+.butCancel p{
+    margin: 0;
+    padding: 0;
 }
 .but p{
     margin: 0;

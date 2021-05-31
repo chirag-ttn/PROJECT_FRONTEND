@@ -13,12 +13,8 @@ export default function Suggestions(props) {
             <div class='suggestion-container'>
                 <div className="row d-flex justify-content-around">
                     <p>{props.heading}</p>
-                    {/* {props.status == 0 ?
-                        <button onClick={updateSuggestions}>
-                            <i class="fas fa-spinner"></i>
-                        </button>
-                        : null} */}
                 </div>
+                {props.status!==2?
                 <div class="row">
                     <div class='col-md-9'>
                         <input type='text' placeholder='Search' />
@@ -26,7 +22,7 @@ export default function Suggestions(props) {
                     <div class='col-md-1'>
                         <i class='fas fa-search'></i>
                     </div>
-                </div>
+                </div>:null}
                 {props.suggestions.map(val => {
 
                     return <Suggestion

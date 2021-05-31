@@ -6,15 +6,16 @@ import { getUser } from '../../redux/actions/auth'
 import Img from '../CircleImg/CircleImg'
 import './Navbar.css'
 import Suggestions from '../../components/Suggestions/suggestions'
+import NotificationModal from '../NotificationModal/NotificationModal'
 import { useSelector } from 'react-redux'
 function Navbar(props) {
     const dispatch = useDispatch()
     useEffect(() => {
         getUser(dispatch)()
     }, [getUser])
-    
+
     const state = useSelector(state => state.authReducer)
-    
+
 
     return (
         <>
@@ -28,14 +29,19 @@ function Navbar(props) {
                             <div class="right-links">
 
                                 <img class="user-profile-pic" src={props.profile_image} alt="logo" />
-                                <p>{props.username}</p>
+                                <a class='text' href={`/userProfile/${state.profile_id}`}>
+                                    <p>{props.username}</p>
+                                </a>
+
 
                                 <i class="fab fa-facebook-messenger" />
-                                <button onClick={props.onToggle}>
+                                {/* <button onClick={props.onToggle}>
 
-                                <i class="far fa-bell" />
-                                </button>
-                                
+                                    <i class="far fa-bell" />
+                                </button> */}
+                                    
+                                        {/* <NotificationModal /> */}
+
                                 <a href='feeds'><button class="btn btn-dark" >Feeds</button></a>
                                 <button class="btn btn-danger" onClick={() => dispatch(actions.removeToken())}>Logout</button>
                             </div>
