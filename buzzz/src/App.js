@@ -1,16 +1,9 @@
 import './App.css';
 import Routes from './Routes'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 
-axios.interceptors.request.use(config => {
-  console.log('Request was sent');
-  config.headers.Authorization = localStorage.getItem('token');
-  console.log(config)
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
+
 function App() {
     
   const isAuth = useSelector(state => state.authReducer)

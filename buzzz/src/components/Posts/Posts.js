@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../Api/localhost'
 import { useEffect, useState, useRef } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
@@ -30,7 +30,7 @@ export default function Posts(props) {
     const likeHandler = () => {
         setlike(true)
         setdislike(false)
-        axios.post('http://localhost:4444/posts/likePost', {
+        axios.post('/posts/likePost', {
 
             user_profile_id: profile_id,
             post_id: post_id
@@ -40,7 +40,7 @@ export default function Posts(props) {
     }
     const unlikeHandler = () => {
         setlike(false)
-        axios.post('http://localhost:4444/posts/unlikePost', {
+        axios.post('/posts/unlikePost', {
             user_profile_id: profile_id,
             post_id: post_id
         })
@@ -51,7 +51,7 @@ export default function Posts(props) {
     const dislikeHandler = () => {
         setdislike(true)
         setlike(false)
-        axios.post('http://localhost:4444/posts/dislikePost', {
+        axios.post('/posts/dislikePost', {
             user_profile_id: profile_id,
             post_id: post_id
         })
@@ -60,7 +60,7 @@ export default function Posts(props) {
     }
     const undislikeHandler = () => {
         setdislike(false)
-        axios.post('http://localhost:4444/posts/undislikePost', {
+        axios.post('/posts/undislikePost', {
             user_profile_id: profile_id,
             post_id: post_id
         })
@@ -79,7 +79,7 @@ export default function Posts(props) {
             let commentStore = comment
             setComment(null)
             setShowComment(true)
-            axios.post('http://localhost:4444/posts/createComment', {
+            axios.post('/posts/createComment', {
                 profile_id: props.current_user,
                 post_id: post_id,
                 comment: commentStore
@@ -91,7 +91,7 @@ export default function Posts(props) {
     }
     const flagHandler = () => {
         setflag(true)
-        axios.post('http://localhost:4444/posts/flagPost', {
+        axios.post('/posts/flagPost', {
             profile_id: props.current_user,
             post_id: post_id
         })
@@ -101,7 +101,7 @@ export default function Posts(props) {
     }
     const unflagHandler = () => {
         setflag(false)
-        axios.post('http://localhost:4444/posts/unflagPost', {
+        axios.post('/posts/unflagPost', {
             profile_id: props.current_user,
             post_id: post_id
         })
@@ -110,7 +110,7 @@ export default function Posts(props) {
 
     }
     const approveFlaggedPost = () => {
-        axios.post('http://localhost:4444/posts/approveFlaggedPost', {
+        axios.post('/posts/approveFlaggedPost', {
             post_id: post_id
         })
             .then(getFlaggedPosts(dispatch))
@@ -118,7 +118,7 @@ export default function Posts(props) {
 
     }
     const removeFlaggedPost = () => {
-        axios.post('http://localhost:4444/posts/removeFlaggedPost', {
+        axios.post('/posts/removeFlaggedPost', {
             post_id: post_id
         })
             .then(getFlaggedPosts(dispatch))

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../Api/localhost'
 export const getProfileStart = () => {
     return {
         type: "GET_PROFILE_START"
@@ -22,7 +22,7 @@ export const getProfileFailure = (err) => {
 export const getProfile = (dispatch) => {
     return () => {  
             dispatch(getProfileStart())
-            axios.get('http://localhost:4444/profile/getUserProfile')
+            axios.get('/profile/getUserProfile')
             .then(res => dispatch(getProfileSuccess(res)))
             .catch(err=> dispatch(getProfileFailure(err)))
     }
@@ -30,7 +30,7 @@ export const getProfile = (dispatch) => {
 export const getUserProfile = (dispatch) => {
     return (data) => {  
             dispatch(getProfileStart())
-            axios.get('http://localhost:4444/profile/getAnyUserProfile?profile_id='+data)
+            axios.get('/profile/getAnyUserProfile?profile_id='+data)
             .then(res => dispatch(getProfileSuccess(res)))
             .catch(err=> dispatch(getProfileFailure(err)))
     }

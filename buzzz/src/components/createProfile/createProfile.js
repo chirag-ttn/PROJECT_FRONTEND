@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import Form from '../Form/Form'
-import axios from 'axios'
+import axios from '../../Api/localhost'
 import './Createprofile.css'
 
 import { getUser } from '../../redux/actions/auth'
@@ -15,14 +15,14 @@ function Profile(props) {
 
         axios({
             method: "post",
-            url: "http://localhost:4444/profile/createProfile",
+            url: "/profile/createProfile",
             data: JSON.stringify(values),
             headers: { "Content-Type": 'application/json' },
         })
             .then(function (response) {
                 console.log(response)
-                history.push('/feeds')
                 getProfile(dispatch)()
+                history.push('/feeds')
             })
             .catch(function (response) {
                 console.log(response)
@@ -52,7 +52,7 @@ function Profile(props) {
         console.log(document.getElementById('profile_image'))
         formdata.append('profile_image', document.getElementById('profile_image').files[0])
         formdata.append('cover_image', document.getElementById('cover_image').files[0])
-        axios.post('http://localhost:4444/profile/uploadImage', formdata, {
+        axios.post('/profile/uploadImage', formdata, {
             headers: {
                 'Content-type': 'multipart/form-data'
             }

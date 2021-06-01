@@ -10,10 +10,10 @@ export default function CreatePosts(props) {
     // console.log(props)
     let formData = new FormData()
     const dispatch = useDispatch()
-    const [text, setText] = useState(null)
-    const [file, setFile] = useState(null)
+    const [text, setText] = useState('')
+    const [file, setFile] = useState('')
     const [error, setError] = useState(false)
-    const postInput = useRef(null)
+    const postInput = useRef('')
     const handleTextChange = (event) => {
         setText(event.target.value)
     }
@@ -23,17 +23,17 @@ export default function CreatePosts(props) {
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log("POST++++++++++++++++++++>",text,file,error)
-        if (text === null && file === null) {
+        if (text === '' && file === '') {
             setError(true)
         }
         else {
             formData.append('text', text)
             formData.append('profile_id', props.profile_id)
             formData.append('image', file)
-            postInput.current.value = null
+            postInput.current.value = ''
             createPost(formData)(dispatch)
-            setText(null)
-            setFile(null)
+            setText('')
+            setFile('')
         }
 
     }

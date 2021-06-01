@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../Api/localhost'
 export const getPostStart = () => {
     return {
         type: "GET_POST_START"
@@ -49,7 +49,7 @@ export const createPostFailure = (err) => {
 export const getPosts = (dispatch) => {
 
         dispatch(getPostStart())
-        axios.get('http://localhost:4444/posts/getAllPosts')
+        axios.get('/posts/getAllPosts')
         .then(res=>dispatch(getPostSuccess(res)))
         .catch(err=>dispatch(getPostFailure(err)))
 
@@ -57,7 +57,7 @@ export const getPosts = (dispatch) => {
 export const getPostsPerPage = (dispatch) => {
     return (pageCount,postCount) => {
         dispatch(getPostStart())
-        axios.get(`http://localhost:4444/posts/getPosts`, { params: { pageCount,postCount} })
+        axios.get(`/posts/getPosts`, { params: { pageCount,postCount} })
             .then(res => dispatch(getPostSuccess(res)))
             .catch(err => dispatch(getPostFailure(err)))
     }
@@ -65,7 +65,7 @@ export const getPostsPerPage = (dispatch) => {
 export const getFlaggedPosts = (dispatch) => {
 
     dispatch(getPostStart())
-    axios.get('http://localhost:4444/posts/getFlaggedPosts')
+    axios.get('/posts/getFlaggedPosts')
         .then(res => dispatch(getFlaggedPostSuccess(res)))
         .catch(err => dispatch(getPostFailure(err)))
 
@@ -73,7 +73,7 @@ export const getFlaggedPosts = (dispatch) => {
 export const createPost = (data) => {
     return (dispatch) => {
         dispatch(createPostStart())
-        axios.post('http://localhost:4444/posts/createPost', data,
+        axios.post('/posts/createPost', data,
             {
                 headers: {
                     'Content-type': 'multipart/form-data'
@@ -81,6 +81,8 @@ export const createPost = (data) => {
             }
         ).then(res => {
             dispatch(createPostSuccess(res.data))
+        }).catch(err=>{
+            dispatch(createPostFailure(err))
         })
     }
 

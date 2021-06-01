@@ -96,7 +96,8 @@ function Feeds() {
         getPostsPerPage(dispatch)(pageNumber, postCount)
 
     }
-    if (feed.length === 0) {
+    console.log('feed',feed,post)
+    if (feed.length === 0 && post.posts[0]!==null) {
         feed = [...post.posts]
     }
     return (

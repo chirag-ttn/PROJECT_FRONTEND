@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Classes from './displayProfile.module.css'
-import axios from 'axios'
+import axios from '../../Api/localhost'
 import {useDispatch} from 'react-redux'
 import {getProfile} from '../../redux/actions/Profile'
 import { Redirect } from 'react-router';
@@ -11,13 +11,13 @@ const DisplayProfile = (props) => {
     const [showBtn, setshowBtn] = useState(true)
         const addFriendRequest= () => {
             setshowBtn(false)
-            axios.get('http://localhost:4444/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+            axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
                 .then(res=>console.log(res))
                 .catch(err => console.log(err))
         }
         const cancelFriendRequest = () => {
             setshowBtn(true)
-            axios.get('http://localhost:4444/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+            axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
                 .then(res=>console.log(res))
                 .catch(err => console.log(err))
         }

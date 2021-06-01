@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../../Api/localhost'
 import {useDispatch} from 'react-redux'
 import './suggestion.css'
 import {Link} from 'react-router-dom'
@@ -8,7 +8,7 @@ import { getPostsPerPage } from '../../../redux/actions/Posts'
 export default function Suggestion(props) {
     const dispatch = useDispatch()
         const AddFriendHandler = () => {
-            axios.get('http://localhost:4444/users/addFriendRequested', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
+            axios.get('/users/addFriendRequested', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
                 .then(getProfile(dispatch))
                 .catch(err => console.log(err))
         }
@@ -18,7 +18,7 @@ export default function Suggestion(props) {
     
     
     const friendRemoveHandler = () => {
-        axios.get('http://localhost:4444/users/removeFriend', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
+        axios.get('/users/removeFriend', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
             .then(getProfile(dispatch))
             .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
@@ -28,13 +28,13 @@ export default function Suggestion(props) {
     </>)
 
 const RequestAcceptHandler = () => {
-    axios.get('http://localhost:4444/users/addFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
+    axios.get('/users/addFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
     .then(getProfile(dispatch))
     .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
     .catch(err => console.log(err))
 }
 const RequestRejectHandler = () => {
-    axios.get('http://localhost:4444/users/rejectFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
+    axios.get('/users/rejectFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
     .then(getProfile(dispatch))
     .catch(err => console.log(err))
 }
@@ -47,7 +47,7 @@ const RequestBtn = (
 
 
 const RevokeRequestHandler = () => {
-    axios.get('http://localhost:4444/users/revokeRequest', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
+    axios.get('/users/revokeRequest', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
     .then(getProfile(dispatch))
     .catch(err => console.log(err))
 }

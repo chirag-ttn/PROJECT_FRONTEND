@@ -1,6 +1,8 @@
 import React from 'react';
 import './googleLogin.css'
 import image from '../../images/TTN.jpg'
+import axios from '../../Api/localhost'
+
 function googleLogin() {
     return (
         <>
@@ -14,7 +16,7 @@ function googleLogin() {
                 </div>
 
 
-                    <a href="http://localhost:4444/api/auth" id="btn-google">Sign In with Google</a>
+                    <a href={`http://localhost:4444/api/auth`} id="btn-google">Sign In with Google</a>
             </div>
         </>
     )

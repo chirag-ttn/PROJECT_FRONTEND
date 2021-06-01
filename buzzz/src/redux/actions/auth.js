@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import axios from 'axios'
+import axios from '../../Api/localhost'
 
 export const setToken = () => {
     let auth = false;

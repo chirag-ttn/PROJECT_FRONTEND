@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../Api/localhost'
 export const getUsersStart = () => {
     return {
         type: "GET_USERS_START"
@@ -22,7 +22,7 @@ export const getUsersFailure = (err) => {
 export const getUsers = (dispatch) => {
     
         dispatch(getUsersStart())
-        axios.get('http://localhost:4444/users/getAllUsers')
+        axios.get('/users/getAllUsers')
         .then(res=>
             {return dispatch(getUsersSuccess(res))})
         .catch(err=>dispatch(getUsersFailure(err)))
