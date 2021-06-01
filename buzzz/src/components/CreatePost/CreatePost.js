@@ -7,7 +7,7 @@ import axios from 'axios'
 import { useState,useRef } from 'react'
 
 export default function CreatePosts(props) {
-    // console.log(props)
+    console.log(props)
     let formData = new FormData()
     const dispatch = useDispatch()
     const [text, setText] = useState('')
@@ -22,7 +22,6 @@ export default function CreatePosts(props) {
     }
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log("POST++++++++++++++++++++>",text,file,error)
         if (text === '' && file === '') {
             setError(true)
         }
@@ -45,7 +44,7 @@ export default function CreatePosts(props) {
                 <div className='row'>
                     <Img class="img" src={props.picture} />
                     <form >
-                        <input class='addpost' ref={postInput} id='text' name='text' type='text' onChange={handleTextChange} placeholder="What's on your mind, Chirag ?" />
+                        <input class='addpost' ref={postInput} id='text' name='text' type='text' onChange={handleTextChange} placeholder={`What's on your mind, ${props.firstname} ?`} />
                         <div class='file'>
                             <input id='file'  name='img' type='file' onChange={handleFileChange} hidden />
                             <label for='file' ><i style={{ 'color': 'green' }} class="fas fa-images"></i> Photos</label>

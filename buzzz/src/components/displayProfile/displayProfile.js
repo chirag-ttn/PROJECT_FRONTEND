@@ -1,36 +1,56 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Classes from './displayProfile.module.css'
 import axios from '../../Api/localhost'
-import {useDispatch} from 'react-redux'
-import {getProfile} from '../../redux/actions/Profile'
-import { Redirect } from 'react-router';
-import {Link, useHistory} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { getProfile } from '../../redux/actions/Profile'
 const DisplayProfile = (props) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
+    const [status, setStatus] = useState(null);
     let history = useHistory();
-    const [showBtn, setshowBtn] = useState(true)
-        const addFriendRequest= () => {
-            setshowBtn(false)
-            axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-                .then(res=>console.log(res))
-                .catch(err => console.log(err))
-        }
-        const cancelFriendRequest = () => {
-            setshowBtn(true)
-            axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-                .then(res=>console.log(res))
-                .catch(err => console.log(err))
-        }
-        const updateProfile = ()=>{
-            history.push('/updateProfile')
-        }
+    // const addFriendRequest = () => {
+    //     axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    // }
+    // const cancelFriendRequest = () => {
+    //     axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    // }
+    // const removeFriend = () => {
+    //     axios.get('/users/removeFriend', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    // }
+    useEffect(() => {
+        btnStatus(props.userProfileId, props.friendProfile)
+    }, [props])
+    const AddFriendHandler = () => {
+        axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+            .then(getProfile(dispatch))
+            .catch(err => console.log(err))
+    }
+    const RevokeRequestHandler = () => {
+        axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+            .then(getProfile(dispatch))
+            .catch(err => console.log(err))
+    }
+    const friendRemoveHandler = () => {
+        axios.get('/users/removeFriend', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
+            .then(getProfile(dispatch))
+            .catch(err => console.log(err))
+    }
+    const updateProfile = () => {
+        history.push('/updateProfile')
+    }
     let addFriendBtn = (<>
-        <button onClick={addFriendRequest} className={Classes.but}>
+        <button onClick={AddFriendHandler} className={Classes.but}>
             <p>Add friend</p>
         </button>
     </>)
     let cancelRequestBtn = (<>
-        <button onClick={cancelFriendRequest} className={Classes.butCancel}>
+        <button onClick={RevokeRequestHandler} className={Classes.butCancel}>
             <p>Cancel Request</p>
         </button>
     </>)
@@ -40,7 +60,44 @@ const DisplayProfile = (props) => {
         </button>
     </>)
 
+    let removeFriendBtn = (<>
+        <button onClick={friendRemoveHandler} className={Classes.butCancel}>
+            <p>Remove Friend</p>
+        </button>
+    </>)
 
+    console.log(props, status)
+    const btnStatus = (current_user_id, friendProfile) => {
+        if (current_user_id === friendProfile._id)
+            setStatus(0) //updateProfile
+        else {
+            if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requested.indexOf(current_user_id) === -1)
+                setStatus(1) //addFriend
+            else if (friendProfile.friends.indexOf(current_user_id) > -1 && friendProfile.requested.indexOf(current_user_id) === -1)
+                setStatus(2) //remove Friend
+            else if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requested.indexOf(current_user_id) > -1)
+                setStatus(3) //revoke Request
+        }
+
+    }
+    let firstBtn = null;
+    switch (status) {
+        case 0:
+            firstBtn = updateProfileBtn
+            break;
+        case 1:
+            firstBtn = addFriendBtn
+            break;
+        case 2:
+            firstBtn = removeFriendBtn
+            break;
+        case 3:
+            firstBtn = cancelRequestBtn
+            break;
+
+        default:
+            break;
+    }
 
     return (
         <>
@@ -66,14 +123,9 @@ const DisplayProfile = (props) => {
                             <li><span></span></li>
                         </ul>
                         <div className={Classes.btnContainer}>
-                            {
-                            (props.friendProfile._id !== props.userProfileId)?
-                            showBtn?
-                            addFriendBtn : cancelRequestBtn:
-                            updateProfileBtn
-                        }
 
-
+                            {firstBtn}
+                            {/* {props.userProfileId===friendProfile._id?updateProfileBtn:restBtns} */}
                             <button className={Classes.but}><i class="fas fa-external-link-square-alt"></i>
                                 <p>visit Website</p>
                             </button>

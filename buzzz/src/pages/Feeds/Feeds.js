@@ -97,7 +97,7 @@ function Feeds() {
 
     }
     console.log('feed',feed,post)
-    if (feed.length === 0 && post.posts[0]!==null) {
+    if (feed.length === 0 && post.posts[1]!==null) {
         feed = [...post.posts]
     }
     return (
@@ -112,7 +112,7 @@ function Feeds() {
                         <div class='container-fluid'>
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <CreatePost picture={current_user_profile.profile_image} profile_id={current_user_profile._id} />
+                                    <CreatePost firstname={current_user_profile.firstname} picture={current_user_profile.profile_image} profile_id={current_user_profile._id} />
                                 </div>
                             </div>
                             <div class='row'>
