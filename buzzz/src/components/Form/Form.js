@@ -75,11 +75,11 @@ let ContactForm = props => {
                     <input
                         type='text'
                         name="firstname"
-                        value={profile?profile.firstname:formState.firstname}
+                        value={formState.firstname}
                         onChange={handleChange}
                         className="form-control col-sm-12"
                         id="firstname"
-                        placeholder="First Name"
+                        placeholder={profile?profile.firstname:"First Name"}
                     />
                     <span style={{ color: "red" }}>{error.firstname}</span>
 
@@ -88,12 +88,12 @@ let ContactForm = props => {
                     <label for="lastname">Last Name</label>
                     <input
                         type="text"
-                        value={profile?profile.lastname:formState.lastname}
+                        value={formState.lastname}
                         name="lastname"
                         className="form-control col-sm-12"
                         id="lastname"
                         onChange={handleChange}
-                        placeholder="Last Name" />
+                        placeholder={profile?profile.lastname:"Last Name"} />
                 <span style={{ color: "red" }}>{error.lastname}</span>
                 </div>
 
@@ -101,7 +101,7 @@ let ContactForm = props => {
             <div className="form-row">
                 <div className="form-group col-md-4">
                     <label for="inputState">Designation</label>
-                    <select id="inputState" value={profile?profile.designation:formState.designation} onChange={handleChange} name="designation" className="form-control">
+                    <select id="inputState" value={formState.designation} onChange={handleChange} name="designation" className="form-control">
                         <option selected>Co-Founder</option>
                         <option>SDE-1</option>
                         <option>SDE-2</option>
@@ -114,10 +114,10 @@ let ContactForm = props => {
                         name="website"
                         type="text"
                         className="form-control"
-                        value={profile?profile.website:formState.website}
+                        value={formState.website}
                         onChange={handleChange}
                         id="website"
-                        placeholder="https://reactjs.org" />
+                        placeholder={profile?profile.website:"https://reactjs.org"} />
                     <span style={{ color: "red" }}>{error.website}</span>
 
                 </div>
@@ -126,7 +126,7 @@ let ContactForm = props => {
                 <div className="form-group col-md-4">
 
                     <label className="col-md-12" for="gender">Gender</label>
-                    <select id="gender" value={profile?profile.gender:formState.gender} onChange={handleChange} name='gender' className="form-control">
+                    <select id="gender" value={formState.gender} onChange={handleChange} name='gender' className="form-control">
                         <option selected>Male</option>
                         <option>Female</option>
                     </select>
@@ -137,8 +137,9 @@ let ContactForm = props => {
                     <input
                         name="dob"
                         type="date"
-                        value={profile?profile.dob:formState.dob}
+                        value={formState.dob}
                         onChange={handleChange}
+                        placeholder={profile?profile.dob:'dob'}
                         className="form-control"
                         id="Birthday" />
                 </div>
@@ -152,14 +153,15 @@ let ContactForm = props => {
                         className="form-control"
                         id="inputCity"
                         onChange={handleChange}
-                        value={profile?profile.city:formState.city}
+                        value={formState.city}
+                        placeholder={profile?profile.city:'City Name'}
                     />
                     <span style={{ color: "red" }}>{error.city}</span>
 
                 </div>
                 <div className="form-group col-md-2">
                     <label for="inputState">State</label>
-                    <select value={profile?profile.state:formState.state} onChange={handleChange} id="inputState" name='state' className="form-control">
+                    <select value={formState.state} onChange={handleChange} id="inputState" name='state' className="form-control">
                         <option selected>delhi</option>
                         <option>Up</option>
                         <option>haryana</option>
@@ -170,9 +172,10 @@ let ContactForm = props => {
                     <input
                         name="zip"
                         type="number"
-                        value={profile?profile.zip:formState.zip}
+                        value={formState.zip}
                         onChange={handleChange}
                         className="form-control"
+                        placeholder={profile?profile.zip:'Zip Code'}
                         id="inputZip" />
                     <span style={{ color: "red" }}>{error.zip}</span>
 
