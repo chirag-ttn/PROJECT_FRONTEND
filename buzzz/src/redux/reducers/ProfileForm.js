@@ -2,7 +2,6 @@ const initialState = {
     firstname: '',
     lastname: '',
     designation: 'co-founder',
-    website: '',
     gender: 'male',
     dob: '',
     city: '',

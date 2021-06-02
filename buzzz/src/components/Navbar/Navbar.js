@@ -22,11 +22,11 @@ function Navbar(props) {
     const profileState = useSelector(state => state.profileReducer)
     const { profile, getProfileLoading } = profileState
     const clickedFeedBtn = () => {
-        if(location.pathname.includes('userProfile'))
-        {
+        if (location.pathname.includes('userProfile')) {
             history.push('/feeds')
         }
     }
+    console.log(profileState)
     return (
         <>
             <div class='navbar-section'>
@@ -40,20 +40,20 @@ function Navbar(props) {
 
                                 <img class="user-profile-pic" src={props.profile_image} alt="logo" />
                                 <p>
-                                    {profileState.anyUserProfile === '' ? props.username :
+                                    {(profileState.profile === '' && profileState.anyUserProfile === null) ? props.username :
                                         <a class='text' href={`/userProfile/${state.profile_id}`}>
                                             {props.username}
                                         </a>
                                     }
                                 </p>
+                                {(profileState.profile === '' && profileState.anyUserProfile === null) ?
+                                    null :
+                                    <a href='feeds'><button onClick={clickedFeedBtn} class="btn btn-dark" >Feeds</button></a>}
 
-
-
-                                {profile === '' ? null :
+                                {(profileState.profile) ?
                                     <>
                                         <NotificationModal profile={profile} getProfileLoading={getProfileLoading} />
-                                        <a href='feeds'><button onClick={clickedFeedBtn} class="btn btn-dark" >Feeds</button></a>
-                                    </>
+                                    </>:null
                                 }
 
 

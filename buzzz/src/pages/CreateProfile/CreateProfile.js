@@ -17,7 +17,6 @@ function CreateProfile() {
     const state = useSelector(state => state.profileReducer)
     const auth = useSelector(state => state.authReducer)
 
-
     const profile_img_url = (state.profile != '' ? state.profile.profile_image : auth.profile_pic)
     const username = (state.profile == '') ? auth.f_name + ' ' + auth.l_name : state.profile.firstname + ' ' + state.profile.lastname;
     const cover_img_url = (state.profile.cover_image)

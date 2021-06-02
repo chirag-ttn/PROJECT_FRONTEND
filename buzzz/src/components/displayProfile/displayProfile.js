@@ -11,13 +11,12 @@ const DisplayProfile = (props) => {
 
     useEffect(() => {
         btnStatus(props.userProfileId, props.friendProfile)
-        console.log(status,props)
     }, [props])
     const AddFriendHandler = () => {
-        setStatus(3)
+        
         axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
         .then(getProfile(dispatch))
-            .catch(err => console.log(err))
+        .catch(err => console.log(err))
     }
     const RevokeRequestHandler = () => {
         setStatus(1)
@@ -59,16 +58,21 @@ const DisplayProfile = (props) => {
 
 
     const btnStatus = (current_user_id, friendProfile) => {
+        
         if (current_user_id === friendProfile._id)
             setStatus(0) //updateProfile
-        else {
-            if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requested.indexOf(current_user_id) === -1)
+        else if(current_user_id!==friendProfile._id){
+            if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requests.indexOf(current_user_id) === -1)
                 setStatus(1) //addFriend
-            else if (friendProfile.friends.indexOf(current_user_id) > -1 && friendProfile.requested.indexOf(current_user_id) === -1)
+            else if (friendProfile.friends.indexOf(current_user_id) > -1 && friendProfile.requests.indexOf(current_user_id) === -1)
                 setStatus(2) //remove Friend
-            else if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requested.indexOf(current_user_id) > -1)
+            else if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requests.indexOf(current_user_id) > -1)
                 setStatus(3) //revoke Request
         }
+        else{
+            setStatus(null)
+        }
+        console.log('main',status,'current_uid',current_user_id,'friendProfile',friendProfile)
 
     }
     let firstBtn = null;
@@ -89,7 +93,6 @@ const DisplayProfile = (props) => {
         default:
             break;
     }
-
     return (
         <>
             <div className={Classes.mainBox}>

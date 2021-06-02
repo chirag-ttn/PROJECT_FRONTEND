@@ -30,19 +30,19 @@ let ContactForm = props => {
             errors.alert = "Please fill all the values";
         }
         if (typeof fields.firstname !== "undefined") {
-            if (!fields.firstname.match(/^[a-zA-Z]+$/)) {
+            if (!fields.firstname.match(/^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/)) {
                 formIsValid = false;
                 errors.firstname = "Only letters";
             }
         }
         if (typeof fields.lastname !== "undefined") {
-            if (!fields.lastname.match(/^[a-zA-Z]+$/)) {
+            if (!fields.lastname.match(/^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/)) {
                 formIsValid = false;
                 errors.lastname = "Only letters";
             }
         }
         if (typeof fields.city !== "undefined") {
-            if (!fields.city.match(/^[a-zA-Z]+$/)) {
+            if (!fields.city.match(/^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/)) {
                 formIsValid = false;
                 errors.city = "Only letters";
             }
@@ -51,13 +51,6 @@ let ContactForm = props => {
             if (!fields.zip.match(/^[0-9]+$/)) {
                 formIsValid = false;
                 errors.zip = "Only Numbers";
-            }
-            // setError(errors)
-        }
-        if (typeof fields.website !== "undefined") {
-            if (!fields.website.match(/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/)) {
-                formIsValid = false;
-                errors.website = "Please enter a valid url";
             }
             // setError(errors)
         }
@@ -99,7 +92,7 @@ let ContactForm = props => {
 
             </div>
             <div className="form-row">
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-8">
                     <label for="inputState">Designation</label>
                     <select id="inputState" value={formState.designation} onChange={handleChange} name="designation" className="form-control">
                         <option selected>Co-Founder</option>
@@ -108,7 +101,7 @@ let ContactForm = props => {
                         <option>CTO</option>
                     </select>
                 </div>
-                <div className="form-group col-md-4">
+                {/* <div className="form-group col-md-4">
                     <label for="website">My Website</label>
                     <input
                         name="website"
@@ -120,7 +113,7 @@ let ContactForm = props => {
                         placeholder={profile?profile.website:"https://reactjs.org"} />
                     <span style={{ color: "red" }}>{error.website}</span>
 
-                </div>
+                </div> */}
             </div>
             <div className="form-row">
                 <div className="form-group col-md-4">

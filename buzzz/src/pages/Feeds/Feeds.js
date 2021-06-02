@@ -156,11 +156,13 @@ function Feeds() {
                                             />
 
                                         })}
+                                        {console.log(feed.length)}
                                         {!post.moderatorView?
                                         <div className='load-more'>
                                             {feed.length % 5 !== 0 ?
                                                 <p className='post-loaded'>All posts are loaded</p> :
-                                                <button className=' btn btn-dark' onClick={loadMoreHandler}>Load More</button>}
+                                                feed.length!==0?
+                                                <button className=' btn btn-dark' onClick={loadMoreHandler}>Load More</button>:null}
                                         </div>:null}
                                     </div>
                                 </div>
