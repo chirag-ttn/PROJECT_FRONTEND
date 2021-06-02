@@ -7,8 +7,7 @@ import { getPostsPerPage } from '../../redux/actions/Posts'
 import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 import { getProfile } from '../../redux/actions/Profile'
-import ContentLoader, { Facebook } from 'react-content-loader'
-
+import Loading from '../../components/Loading/Loading'
 export default function Posts(props) {
 
     const profile_id = props.current_user
@@ -325,7 +324,7 @@ export default function Posts(props) {
     </>
     return (
         <>
-            {props.loading?<ContentLoader />:PostComponent}
+            {props.loading?<Loading />:PostComponent}
         </>
     )
 }

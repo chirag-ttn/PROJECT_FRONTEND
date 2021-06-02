@@ -5,17 +5,18 @@ import logo from '../../images/TTN.jpg'
 import { getUser } from '../../redux/actions/auth'
 import Img from '../CircleImg/CircleImg'
 import './Navbar.css'
-import Suggestions from '../../components/Suggestions/suggestions'
 import NotificationModal from '../NotificationModal/NotificationModal'
 import { useSelector } from 'react-redux'
 import { getProfile } from '../../redux/actions/Profile'
 import { useHistory, useLocation } from 'react-router-dom'
+import Loading from '../../components/Loading/Loading'
 function Navbar(props) {
     const dispatch = useDispatch()
     useEffect(() => {
         getUser(dispatch)()
         getProfile(dispatch)
     }, [getUser, getProfile])
+
     const history = useHistory(null)
     const location = useLocation(null)
     const state = useSelector(state => state.authReducer)
@@ -26,6 +27,7 @@ function Navbar(props) {
             history.push('/feeds')
         }
     }
+    
     console.log(profileState)
     return (
         <>
@@ -36,6 +38,7 @@ function Navbar(props) {
                             <div class="brand">
                                 <Img src={logo} alt="logo" height="50px" width="100px" />
                             </div>
+                            {getProfileLoading?<Loading />:
                             <div class="right-links">
 
                                 <img class="user-profile-pic" src={props.profile_image} alt="logo" />
@@ -53,12 +56,12 @@ function Navbar(props) {
                                 {(profileState.profile) ?
                                     <>
                                         <NotificationModal profile={profile} getProfileLoading={getProfileLoading} />
-                                    </>:null
+                                    </> : null
                                 }
 
 
                                 <button class="btn btn-danger" onClick={() => dispatch(actions.removeToken())}>Logout</button>
-                            </div>
+                            </div>}
                         </div>
                     </nav>
                 </div>

@@ -1,13 +1,11 @@
 import Navbar from '../../components/Navbar/Navbar'
-import displayProfile from '../../components/displayProfile/displayProfile'
-import Suggestions from '../../components/Suggestions/suggestions'
-import Loading from '../../components/Loading/Loading'
 import Classes from './UserProfile.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import DisplayProfile from '../../components/displayProfile/displayProfile'
 import { getUserProfile,getProfile } from '../../redux/actions/Profile'
 import { useParams } from 'react-router'
+import Loading from '../../components/Loading/Loading'
 function UserProfile(props) {
     const {id} = useParams()
     
@@ -24,7 +22,7 @@ function UserProfile(props) {
 
     
     return (
-        <>  {loading?'loading...':
+        <>  {loading?<Loading />:
             <div className={Classes.container}>
                 <img className={Classes.bgImg} />
                 <div className={Classes.header}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import './userCard.css'
+import Loading from '../../components/Loading/Loading'
 function UserCard() {
     const props = useSelector(state=>state.profileReducer)
     return (
@@ -20,14 +21,14 @@ function UserCard() {
                             <div class="col-md-6">
                                 <div class="profile-overview">
                                     <p>FRIENDS</p>
-                                    {props.profile.friends == undefined ? 'loading...' :
+                                    {props.profile.friends == undefined ? <Loading /> :
                                         <h4>{props.profile.friends.length}</h4>}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="profile-overview">
                                     <p>POSTS</p>
-                                    {props.profile.posts == undefined ? 'loading...' :
+                                    {props.profile.posts == undefined ? <Loading /> :
                                         <h4>{props.profile.posts.length}</h4>}
                                 </div>
                             </div>

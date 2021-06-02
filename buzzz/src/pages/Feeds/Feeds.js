@@ -7,8 +7,9 @@ import Navbar from '../../components/Navbar/Navbar'
 import Suggestions from '../../components/Suggestions/suggestions'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import Posts from '../../components/Posts/Posts'
-import { getPosts, getFlaggedPosts, getPostsPerPage } from '../../redux/actions/Posts'
+import { getFlaggedPosts, getPostsPerPage } from '../../redux/actions/Posts'
 import { getProfile } from '../../redux/actions/Profile'
+import Loading from '../../components/Loading/Loading'
 import './Feeds.css'
 
 function Feeds() {
@@ -176,7 +177,7 @@ function Feeds() {
                         </div>
                     </div>
                     <div class="right-section">
-                        {loading ? 'loading....' : sf ? SfSidebar : RrSidebar}
+                        {loading ? <Loading/> : sf ? SfSidebar : RrSidebar}
                     </div>
                 </div>
             </div>
