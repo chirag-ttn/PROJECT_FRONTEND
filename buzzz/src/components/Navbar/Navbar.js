@@ -28,7 +28,7 @@ function Navbar(props) {
         }
     }
     
-    console.log(profileState)
+    // console.log(profileState)
     return (
         <>
             <div class='navbar-section'>

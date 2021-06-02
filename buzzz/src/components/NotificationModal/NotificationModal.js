@@ -7,7 +7,7 @@ import Suggestions from '../Suggestions/suggestions'
 
 export default (props) => {
     const [smShow, setSmShow] = useState(false);
-    console.log(props)
+    // console.log(props)
     // const state= useSelector(state => state.profileReducer)
     return (
         <>

@@ -61,7 +61,7 @@ let ContactForm = props => {
     return (
         
         <form name="profile_form" onSubmit={submitForm}>
-            {console.log(profile)}
+            
             <div className="form-row">
                 <div className="form-group col-md-4">
                     <label for="firstname">First Name</label>

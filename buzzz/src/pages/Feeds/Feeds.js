@@ -26,7 +26,7 @@ function Feeds() {
     const postCount = 5;
 
     const post = useSelector(state => state.postReducer)
-    {console.log('POST',post)}
+    // {console.log('POST',post)}
     const profile = useSelector(state => state.profileReducer)
     const { role } = useSelector(state => state.authReducer)
     // console.log(post.posts[0].author_id,profile.profile.user_id)

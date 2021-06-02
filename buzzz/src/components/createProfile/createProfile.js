@@ -12,7 +12,7 @@ function Profile(props) {
     const history = useHistory()
     const dispatch = useDispatch()
     const profileState = useSelector(state=>state.profileReducer)
-    console.log(profileState)
+    //console.log(profileState)
     const submit = values => {
 
         axios({
@@ -22,12 +22,12 @@ function Profile(props) {
             headers: { "Content-Type": 'application/json' },
         })
             .then(function (response) {
-                console.log(response)
+                //console.log(response)
                 getProfile(dispatch)()
                 history.push('/feeds')
             })
             .catch(function (response) {
-                console.log(response)
+                //console.log(response)
                 alert('Error')
             });
     }
@@ -51,7 +51,7 @@ function Profile(props) {
     )
     const handleSubmit = () => {
         let formdata = new FormData()
-        console.log(document.getElementById('profile_image'))
+        //console.log(document.getElementById('profile_image'))
         formdata.append('profile_image', document.getElementById('profile_image').files[0])
         formdata.append('cover_image', document.getElementById('cover_image').files[0])
         axios.post('/profile/uploadImage', formdata, {

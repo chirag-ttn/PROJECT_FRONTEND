@@ -72,7 +72,7 @@ const DisplayProfile = (props) => {
         else{
             setStatus(null)
         }
-        console.log('main',status,'current_uid',current_user_id,'friendProfile',friendProfile)
+        //console.log('main',status,'current_uid',current_user_id,'friendProfile',friendProfile)
 
     }
     let firstBtn = null;

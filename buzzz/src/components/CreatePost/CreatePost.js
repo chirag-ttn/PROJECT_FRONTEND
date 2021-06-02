@@ -8,7 +8,7 @@ import axios from 'axios'
 import { useState,useRef } from 'react'
 
 export default function CreatePosts(props) {
-    console.log(props)
+    //console.log(props)
     let formData = new FormData()
     const dispatch = useDispatch()
     const [text, setText] = useState('')
