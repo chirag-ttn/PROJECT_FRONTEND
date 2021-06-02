@@ -3,6 +3,7 @@ import Img from '../CircleImg/CircleImg'
 import { onTextChangeHandler, onFileChangeHandler } from '../../redux/actions/Posts'
 import { useDispatch } from 'react-redux'
 import { createPost } from '../../redux/actions/Posts'
+import {getProfile} from '../../redux/actions/Profile'
 import axios from 'axios'
 import { useState,useRef } from 'react'
 
@@ -31,6 +32,7 @@ export default function CreatePosts(props) {
             formData.append('image', file)
             postInput.current.value = ''
             createPost(formData)(dispatch)
+            getProfile(dispatch)()
             setText('')
             setFile('')
         }

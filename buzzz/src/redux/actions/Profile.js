@@ -12,6 +12,13 @@ export const getProfileSuccess = (data) => {
     }
 }
 
+export const getAnyUserProfileSuccess = (data) => {
+    return {
+        type: "GET_ANY_USER_PROFILE_SUCCESS",
+        payload: data
+    }
+}
+
 export const getProfileFailure = (err) => {
     return {
         type: "GET_PROFILE_FAILURE",
@@ -31,7 +38,7 @@ export const getUserProfile = (dispatch) => {
     return (data) => {  
             dispatch(getProfileStart())
             axios.get('/profile/getAnyUserProfile?profile_id='+data)
-            .then(res => dispatch(getProfileSuccess(res)))
+            .then(res => dispatch(getAnyUserProfileSuccess(res)))
             .catch(err=> dispatch(getProfileFailure(err)))
     }
 }

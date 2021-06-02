@@ -81,7 +81,8 @@ export const createPost = (data) => {
             }
         ).then(res => {
             dispatch(createPostSuccess(res.data))
-        }).catch(err=>{
+        })
+        .catch(err=>{
             dispatch(createPostFailure(err))
         })
     }

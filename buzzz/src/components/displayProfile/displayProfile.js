@@ -8,37 +8,28 @@ const DisplayProfile = (props) => {
     const dispatch = useDispatch()
     const [status, setStatus] = useState(null);
     let history = useHistory();
-    // const addFriendRequest = () => {
-    //     axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-    //         .then(res => console.log(res))
-    //         .catch(err => console.log(err))
-    // }
-    // const cancelFriendRequest = () => {
-    //     axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-    //         .then(res => console.log(res))
-    //         .catch(err => console.log(err))
-    // }
-    // const removeFriend = () => {
-    //     axios.get('/users/removeFriend', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-    //         .then(res => console.log(res))
-    //         .catch(err => console.log(err))
-    // }
+
     useEffect(() => {
         btnStatus(props.userProfileId, props.friendProfile)
+        console.log(status,props)
     }, [props])
     const AddFriendHandler = () => {
+        setStatus(3)
         axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-            .then(getProfile(dispatch))
+        .then(getProfile(dispatch))
             .catch(err => console.log(err))
     }
     const RevokeRequestHandler = () => {
+        setStatus(1)
         axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
             .then(getProfile(dispatch))
             .catch(err => console.log(err))
     }
     const friendRemoveHandler = () => {
+        setStatus(1)
         axios.get('/users/removeFriend', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
             .then(getProfile(dispatch))
+
             .catch(err => console.log(err))
     }
     const updateProfile = () => {
@@ -66,7 +57,7 @@ const DisplayProfile = (props) => {
         </button>
     </>)
 
-    console.log(props, status)
+
     const btnStatus = (current_user_id, friendProfile) => {
         if (current_user_id === friendProfile._id)
             setStatus(0) //updateProfile

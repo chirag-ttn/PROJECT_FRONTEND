@@ -3,9 +3,10 @@ import { useEffect, useState, useRef } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
 import { useDispatch, useSelector } from 'react-redux'
-import {getPostsPerPage} from '../../redux/actions/Posts'
+import { getPostsPerPage } from '../../redux/actions/Posts'
 import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
+import { getProfile } from '../../redux/actions/Profile'
 
 export default function Posts(props) {
 
@@ -18,6 +19,8 @@ export default function Posts(props) {
     const [errorComment, seterrorComment] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [showFlag, setShowFlag] = useState(false)
+    const [likeCount, setlikeCount] = useState(props.like_count)
+    const [dislikeCount, setdislikeCount] = useState(props.dislike_count)
 
     const commentInput = useRef(null)
     const { islike, isdislike, isflagged } = props;
@@ -28,18 +31,25 @@ export default function Posts(props) {
         setflag(isflagged)
     }, [islike, isdislike, isflagged])
     const likeHandler = () => {
+        let temp_dislike = dislike
         setlike(true)
-        setdislike(false)
+        setlikeCount(likeCount + 1)
+        if (dislike) {
+            setdislike(false)
+            setdislikeCount(dislikeCount-1)
+        }
         axios.post('/posts/likePost', {
 
             user_profile_id: profile_id,
-            post_id: post_id
+            post_id: post_id,
+            dislike:temp_dislike
         })
             .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const unlikeHandler = () => {
         setlike(false)
+        setlikeCount(likeCount - 1)
         axios.post('/posts/unlikePost', {
             user_profile_id: profile_id,
             post_id: post_id
@@ -50,16 +60,24 @@ export default function Posts(props) {
     }
     const dislikeHandler = () => {
         setdislike(true)
-        setlike(false)
+        let temp_like = like
+        if (like) {
+            setlike(false)
+            setlikeCount(likeCount - 1)
+        }
+        setdislikeCount(dislikeCount + 1)
+
         axios.post('/posts/dislikePost', {
             user_profile_id: profile_id,
-            post_id: post_id
+            post_id: post_id,
+            like:temp_like
         })
             .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
             .catch(err => console.log(err))
     }
     const undislikeHandler = () => {
         setdislike(false)
+        setdislikeCount(dislikeCount - 1)
         axios.post('/posts/undislikePost', {
             user_profile_id: profile_id,
             post_id: post_id
@@ -122,7 +140,9 @@ export default function Posts(props) {
             post_id: post_id
         })
             .then(getFlaggedPosts(dispatch))
+            .then(getProfile(dispatch))
             .catch(err => console.log(err))
+
 
     }
 
@@ -262,15 +282,15 @@ export default function Posts(props) {
 
                     <div class="p-2 ml-2">
                         <div className='d-flex justify-content-between align-items-center'>
-                            <p class="display-container">
+                            <p className="display-container">
 
                                 <div >
                                     <i className='fas fa-heart like'></i>
-                                    <p className='text-muted'>{props.like_count ? props.like_count : null}</p>
+                                    <p className='text-muted'>{likeCount}</p>
                                 </div>
-                                <div >
+                                <div className='px-2'>
                                     <i className='fas fa-thumbs-down dislike'></i>
-                                    <p className='text-muted'>{props.dislike_count ? props.dislike_count : null}</p>
+                                    <p className='text-muted'>{dislikeCount}</p>
                                 </div>
                                 {/* <div><i className='fas fa-flag'></i> <p>{props.flag_count ? props.flag_count : null}</p></div> */}
                             </p>

@@ -1,14 +1,15 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import './userCard.css'
-function UserCard(props) {
+function UserCard() {
+    const props = useSelector(state=>state.profileReducer)
     return (
         <>
-
+            
             <div class="col-md-12">
 
                 <div class="profile-card-4 text-center">
-                    <img src={props.profile_image} class="img img-responsive" />
+                    <img src={props.profile.profile_image} class="img img-responsive" />
                     <div class="profile-content">
                         <div class="profile-name">{props.profile.firstname + ' ' + props.profile.lastname}
                         </div>
@@ -26,8 +27,8 @@ function UserCard(props) {
                             <div class="col-md-6">
                                 <div class="profile-overview">
                                     <p>POSTS</p>
-                                    {props.post.posts == undefined ? 'loading...' :
-                                        <h4>{props.post.posts.length}</h4>}
+                                    {props.profile.posts == undefined ? 'loading...' :
+                                        <h4>{props.profile.posts.length}</h4>}
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ let ContactForm = props => {
     const dispatch = useDispatch()
     const formState = useSelector(state => state.formReducer)
     const error = useSelector(state=>state.errorReducer)
+    const profile = useSelector(state=>state.profileReducer.profile)
     const submitForm = (e) => {
         e.preventDefault()
         const valid = handleValidation()
@@ -24,7 +25,7 @@ let ContactForm = props => {
         let errors = {};
         let formIsValid = true;
 
-        if (!fields.firstname || !fields.lastname || !fields.city || !fields.zip || !fields.website || !fields.designation || !fields.gender || !fields.state) {
+        if (!fields.firstname || !fields.lastname || !fields.city || !fields.zip  || !fields.designation || !fields.gender || !fields.state) {
             formIsValid = false;
             errors.alert = "Please fill all the values";
         }
@@ -65,14 +66,16 @@ let ContactForm = props => {
         //website 
     }
     return (
+        
         <form name="profile_form" onSubmit={submitForm}>
+            {console.log(profile)}
             <div className="form-row">
                 <div className="form-group col-md-4">
                     <label for="firstname">First Name</label>
                     <input
                         type='text'
                         name="firstname"
-                        value={formState.firstname}
+                        value={profile?profile.firstname:formState.firstname}
                         onChange={handleChange}
                         className="form-control col-sm-12"
                         id="firstname"
@@ -85,7 +88,7 @@ let ContactForm = props => {
                     <label for="lastname">Last Name</label>
                     <input
                         type="text"
-                        value={formState.lastname}
+                        value={profile?profile.lastname:formState.lastname}
                         name="lastname"
                         className="form-control col-sm-12"
                         id="lastname"
@@ -98,7 +101,7 @@ let ContactForm = props => {
             <div className="form-row">
                 <div className="form-group col-md-4">
                     <label for="inputState">Designation</label>
-                    <select id="inputState" value={formState.designation} onChange={handleChange} name="designation" className="form-control">
+                    <select id="inputState" value={profile?profile.designation:formState.designation} onChange={handleChange} name="designation" className="form-control">
                         <option selected>Co-Founder</option>
                         <option>SDE-1</option>
                         <option>SDE-2</option>
@@ -111,7 +114,7 @@ let ContactForm = props => {
                         name="website"
                         type="text"
                         className="form-control"
-                        value={formState.website}
+                        value={profile?profile.website:formState.website}
                         onChange={handleChange}
                         id="website"
                         placeholder="https://reactjs.org" />
@@ -123,7 +126,7 @@ let ContactForm = props => {
                 <div className="form-group col-md-4">
 
                     <label className="col-md-12" for="gender">Gender</label>
-                    <select id="gender" value={formState.gender} onChange={handleChange} name='gender' className="form-control">
+                    <select id="gender" value={profile?profile.gender:formState.gender} onChange={handleChange} name='gender' className="form-control">
                         <option selected>Male</option>
                         <option>Female</option>
                     </select>
@@ -134,7 +137,7 @@ let ContactForm = props => {
                     <input
                         name="dob"
                         type="date"
-                        value={formState.dob}
+                        value={profile?profile.dob:formState.dob}
                         onChange={handleChange}
                         className="form-control"
                         id="Birthday" />
@@ -149,14 +152,14 @@ let ContactForm = props => {
                         className="form-control"
                         id="inputCity"
                         onChange={handleChange}
-                        value={formState.city}
+                        value={profile?profile.city:formState.city}
                     />
                     <span style={{ color: "red" }}>{error.city}</span>
 
                 </div>
                 <div className="form-group col-md-2">
                     <label for="inputState">State</label>
-                    <select value={formState.state} onChange={handleChange} id="inputState" name='state' className="form-control">
+                    <select value={profile?profile.state:formState.state} onChange={handleChange} id="inputState" name='state' className="form-control">
                         <option selected>delhi</option>
                         <option>Up</option>
                         <option>haryana</option>
@@ -167,7 +170,7 @@ let ContactForm = props => {
                     <input
                         name="zip"
                         type="number"
-                        value={formState.zip}
+                        value={profile?profile.zip:formState.zip}
                         onChange={handleChange}
                         className="form-control"
                         id="inputZip" />

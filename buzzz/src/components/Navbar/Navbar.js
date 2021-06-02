@@ -40,7 +40,7 @@ function Navbar(props) {
 
                                 <img class="user-profile-pic" src={props.profile_image} alt="logo" />
                                 <p>
-                                    {profile === '' ? props.username :
+                                    {profileState.anyUserProfile === '' ? props.username :
                                         <a class='text' href={`/userProfile/${state.profile_id}`}>
                                             {props.username}
                                         </a>
@@ -49,7 +49,6 @@ function Navbar(props) {
 
 
 
-                                <i class="fab fa-facebook-messenger" />
                                 {profile === '' ? null :
                                     <>
                                         <NotificationModal profile={profile} getProfileLoading={getProfileLoading} />
