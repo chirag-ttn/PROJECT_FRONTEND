@@ -7,6 +7,7 @@ import { getPostsPerPage } from '../../redux/actions/Posts'
 import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 import { getProfile } from '../../redux/actions/Profile'
+import ContentLoader, { Facebook } from 'react-content-loader'
 
 export default function Posts(props) {
 
@@ -225,10 +226,11 @@ export default function Posts(props) {
             {errorComment ? <span className={'text-danger'}>Please fill the comment</span> : null}
         </>
     )
-    return (
-        <>
 
-            <div class="card post-container">
+    const PostComponent = 
+    <>
+    
+    <div class="card post-container">
                 <div class='d-flex justify-content-center flex-column col-md-12 '>
                     {showFlag ?
                         <div className='flag-modal'>
@@ -320,6 +322,10 @@ export default function Posts(props) {
                     </div>
                 </div>
             </div>
+    </>
+    return (
+        <>
+            {props.loading?<ContentLoader />:PostComponent}
         </>
     )
 }

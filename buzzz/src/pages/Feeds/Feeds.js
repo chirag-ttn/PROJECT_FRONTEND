@@ -25,11 +25,13 @@ function Feeds() {
     const postCount = 5;
 
     const post = useSelector(state => state.postReducer)
+    {console.log('POST',post)}
     const profile = useSelector(state => state.profileReducer)
     const { role } = useSelector(state => state.authReducer)
     // console.log(post.posts[0].author_id,profile.profile.user_id)
     const current_user_profile = profile.profile
     const loading = profile.getProfileLoading
+    const {getPostLoading} = post
     useEffect(() => {
         getPostsPerPage(dispatch)(pageNumber, postCount)
         setFeed([...feed, ...post.posts])
@@ -96,7 +98,7 @@ function Feeds() {
         getPostsPerPage(dispatch)(pageNumber, postCount)
 
     }
-    console.log('feed',feed,post)
+    // console.log('feed',feed,post)
     if (feed.length === 0 && post.posts[1]!==null) {
         feed = [...post.posts]
     }
@@ -135,8 +137,10 @@ function Feeds() {
                             </div>
                             <div class='row'>
                                 <div class='col-md-12'>
+                                    
                                     <div class='scroll'>
                                         {/* {post.posts?} */}
+                                        
                                         {feed.map(val => {
                                             let { islike, isdislike, isflagged } = reserved_post_state(val)
                                             return <Posts
@@ -153,10 +157,12 @@ function Feeds() {
                                                 flag_count={val.flagged}
                                                 postCount ={5}
                                                 pageCount = {pageNumber}
+                                                loading = {getPostLoading}
+                                                
                                             />
 
                                         })}
-                                        {console.log(feed.length)}
+                                        {/* {console.log(feed.length)} */}
                                         {!post.moderatorView?
                                         <div className='load-more'>
                                             {feed.length % 5 !== 0 ?

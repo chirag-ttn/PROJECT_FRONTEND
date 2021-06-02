@@ -11,6 +11,8 @@ import {getProfile} from '../../redux/actions/Profile'
 function Profile(props) {
     const history = useHistory()
     const dispatch = useDispatch()
+    const profileState = useSelector(state=>state.profileReducer)
+    console.log(profileState)
     const submit = values => {
 
         axios({
@@ -72,10 +74,10 @@ function Profile(props) {
                 <img class="profile" src={props.profile_image} />
 
             </div>
-            <form class="main">
+            <form class="main p-0">
                 <div class='imageWrapper'>
                     <input id="profile_image" type="file" name="profile_image" onChange={() => { setImg(true) }} hidden />
-                    <label for="profile_image" className="btn btn-light icon">
+                    <label for="profile_image" className="btn btn-light icon" hidden={profileState.profile===''}>
                         <i class="fas fa-camera"></i>
                     </label>
 
@@ -83,7 +85,7 @@ function Profile(props) {
                 <div class="cover-img">
 
                     <input id='cover_image' name='cover_image' type='file' onChange={() => { setImg(true) }} hidden />
-                    <label className=" btn btn-light cover-btn" for='cover_image' ><i className="fas fa-camera"></i> Edit Cover</label>
+                    <label className=" btn btn-light cover-btn" for='cover_image' hidden={profileState.profile===''} ><i className="fas fa-camera"></i> Edit Cover</label>
 
 
                 </div>
