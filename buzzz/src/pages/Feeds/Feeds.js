@@ -141,7 +141,7 @@ function Feeds() {
                                     
                                     <div class='scroll'>
                                         {/* {post.posts?} */}
-                                        {console.log(feed)}
+                                        {/* {console.log(feed)} */}
                                         {feed[0]!==null?feed.map(val => {
                                             let { islike, isdislike, isflagged } = reserved_post_state(val)
                                             return <Posts

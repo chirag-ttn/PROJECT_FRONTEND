@@ -3,7 +3,17 @@ import { useEffect, useState, useRef } from 'react'
 import Comment from './comment/comment'
 import './Posts.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPostsPerPage } from '../../redux/actions/Posts'
+import { 
+        likePost,
+        unlikePost,
+        dislikePost, 
+        undislikePost ,
+        commentPost, 
+        flagPost,
+        unflagPost,
+        approveFlagPost,
+        removeFlagPost
+    } from '../../redux/actions/Posts'
 import { getPosts, getFlaggedPosts } from '../../redux/actions/Posts'
 import Moment from 'react-moment'
 import { getProfile } from '../../redux/actions/Profile'
@@ -36,27 +46,29 @@ export default function Posts(props) {
         setlikeCount(likeCount + 1)
         if (dislike) {
             setdislike(false)
-            setdislikeCount(dislikeCount-1)
+            setdislikeCount(dislikeCount - 1)
         }
-        axios.post('/posts/likePost', {
-
-            user_profile_id: profile_id,
+        likePost(dispatch)({
+            profile_id: profile_id,
             post_id: post_id,
-            dislike:temp_dislike
+            temp_dislike: temp_dislike,
+            props: {
+                pageCount: props.pageCount,
+                postCount: props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
     }
     const unlikeHandler = () => {
         setlike(false)
         setlikeCount(likeCount - 1)
-        axios.post('/posts/unlikePost', {
-            user_profile_id: profile_id,
-            post_id: post_id
+        unlikePost(dispatch)({
+            profile_id: profile_id,
+            post_id: post_id,
+            props: {
+                pageCount: props.pageCount,
+                postCount: props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
-
     }
     const dislikeHandler = () => {
         setdislike(true)
@@ -66,24 +78,27 @@ export default function Posts(props) {
             setlikeCount(likeCount - 1)
         }
         setdislikeCount(dislikeCount + 1)
-
-        axios.post('/posts/dislikePost', {
-            user_profile_id: profile_id,
+        dislikePost(dispatch)({
+            profile_id: profile_id,
             post_id: post_id,
-            like:temp_like
+            like: temp_like,
+            props: {
+                pageCount: props.pageCount,
+                postCount: props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
     }
     const undislikeHandler = () => {
         setdislike(false)
         setdislikeCount(dislikeCount - 1)
-        axios.post('/posts/undislikePost', {
-            user_profile_id: profile_id,
-            post_id: post_id
+        undislikePost(dispatch)({
+            profile_id: profile_id,
+            post_id: post_id,
+            props: {
+                pageCount: props.pageCount,
+                postCount: props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
     }
     const commentChangeHandler = (event) => {
         setComment(event.target.value)
@@ -97,52 +112,51 @@ export default function Posts(props) {
             let commentStore = comment
             setComment(null)
             setShowComment(true)
-            axios.post('/posts/createComment', {
-                profile_id: props.current_user,
+            commentPost(dispatch)({
+                profile_id: profile_id,
                 post_id: post_id,
-                comment: commentStore
+                comment:commentStore,
+                props: {
+                    pageCount: props.pageCount,
+                    postCount: props.postCount
+                }
             })
-                .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-                .catch(err => console.log(err))
         }
 
     }
     const flagHandler = () => {
         setflag(true)
-        axios.post('/posts/flagPost', {
-            profile_id: props.current_user,
-            post_id: post_id
+        flagPost(dispatch)({
+            profile_id:props.current_user,
+            post_id:post_id,
+            props:{
+                pageCount:props.pageCount,
+                postCount:props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
 
     }
     const unflagHandler = () => {
         setflag(false)
-        axios.post('/posts/unflagPost', {
-            profile_id: props.current_user,
-            post_id: post_id
+        unflagPost(dispatch)({
+            profile_id:props.current_user,
+            post_id:post_id,
+            props:{
+                pageCount:props.pageCount,
+                postCount:props.postCount
+            }
         })
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
 
     }
     const approveFlaggedPost = () => {
-        axios.post('/posts/approveFlaggedPost', {
-            post_id: post_id
+        approveFlagPost(dispatch)({
+            post_id:post_id
         })
-            .then(getFlaggedPosts(dispatch))
-            .catch(err => console.log(err))
-
     }
     const removeFlaggedPost = () => {
-        axios.post('/posts/removeFlaggedPost', {
-            post_id: post_id
-        })
-            .then(getFlaggedPosts(dispatch))
-            .then(getProfile(dispatch))
-            .catch(err => console.log(err))
-
+    removeFlagPost(dispatch)({
+        post_id:post_id
+    })
 
     }
 
@@ -226,10 +240,10 @@ export default function Posts(props) {
         </>
     )
 
-    const PostComponent = 
-    <>
-    
-    <div class="card post-container">
+    const PostComponent =
+        <>
+
+            <div class="card post-container">
                 <div class='d-flex justify-content-center flex-column col-md-12 '>
                     {showFlag ?
                         <div className='flag-modal'>
@@ -321,7 +335,7 @@ export default function Posts(props) {
                     </div>
                 </div>
             </div>
-    </>
+        </>
     return (
         <>
             {PostComponent}
