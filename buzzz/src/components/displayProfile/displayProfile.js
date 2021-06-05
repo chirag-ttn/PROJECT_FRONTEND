@@ -4,6 +4,7 @@ import axios from '../../Api/localhost'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getProfile } from '../../redux/actions/Profile'
+import { addFriend, removeFriend, revokeRequest } from '../../redux/actions/users'
 const DisplayProfile = (props) => {
     const dispatch = useDispatch()
     const [status, setStatus] = useState(null);
@@ -13,23 +14,25 @@ const DisplayProfile = (props) => {
         btnStatus(props.userProfileId, props.friendProfile)
     }, [props])
     const AddFriendHandler = () => {
-        
-        axios.get('/users/addFriendRequested', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-        .then(getProfile(dispatch))
-        .catch(err => console.log(err))
+        console.log(props)
+        addFriend(dispatch)({
+            user_id: props.userProfileId,
+            friend_id: props.friendProfile._id
+        })
     }
     const RevokeRequestHandler = () => {
         setStatus(1)
-        axios.get('/users/revokeRequest', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-            .then(getProfile(dispatch))
-            .catch(err => console.log(err))
+        revokeRequest(dispatch)({
+            user_id: props.userProfileId,
+            friend_id: props.friendProfile._id
+        })
     }
     const friendRemoveHandler = () => {
         setStatus(1)
-        axios.get('/users/removeFriend', { params: { user_id: props.userProfileId, friend_id: props.friendProfile._id } })
-            .then(getProfile(dispatch))
-
-            .catch(err => console.log(err))
+        removeFriend(dispatch)({
+            user_id: props.userProfileId,
+            friend_id: props.friendProfile._id
+        })
     }
     const updateProfile = () => {
         history.push('/updateProfile')
@@ -58,10 +61,10 @@ const DisplayProfile = (props) => {
 
 
     const btnStatus = (current_user_id, friendProfile) => {
-        
+
         if (current_user_id === friendProfile._id)
             setStatus(0) //updateProfile
-        else if(current_user_id!==friendProfile._id){
+        else if (current_user_id !== friendProfile._id) {
             if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requests.indexOf(current_user_id) === -1)
                 setStatus(1) //addFriend
             else if (friendProfile.friends.indexOf(current_user_id) > -1 && friendProfile.requests.indexOf(current_user_id) === -1)
@@ -69,7 +72,7 @@ const DisplayProfile = (props) => {
             else if (friendProfile.friends.indexOf(current_user_id) === -1 && friendProfile.requests.indexOf(current_user_id) > -1)
                 setStatus(3) //revoke Request
         }
-        else{
+        else {
             setStatus(null)
         }
         //console.log('main',status,'current_uid',current_user_id,'friendProfile',friendProfile)

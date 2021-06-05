@@ -31,6 +31,7 @@ export const getUsers = (dispatch) => {
 }
 export const addFriend = (dispatch) => {
     return (data) => {
+        console.log(data)
         axios.get('/users/addFriendRequested', { params: { user_id: data.user_id, friend_id: data.friend_id } })
             .then(getProfile(dispatch))
             .catch(err => console.log(err))
