@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import Form from '../Form/Form'
 import axios from '../../Api/localhost'
+import {createProfile, uploadImage} from '../../redux/actions/Profile'
 import './Createprofile.css'
 
 import { getUser } from '../../redux/actions/auth'
@@ -12,24 +13,8 @@ function Profile(props) {
     const history = useHistory()
     const dispatch = useDispatch()
     const profileState = useSelector(state=>state.profileReducer)
-    //console.log(profileState)
     const submit = values => {
-
-        axios({
-            method: "post",
-            url: "/profile/createProfile",
-            data: JSON.stringify(values),
-            headers: { "Content-Type": 'application/json' },
-        })
-            .then(function (response) {
-                //console.log(response)
-                getProfile(dispatch)()
-                history.push('/feeds')
-            })
-            .catch(function (response) {
-                //console.log(response)
-                alert('Error')
-            });
+        createProfile(dispatch)(history)(values)
     }
     const [img, setImg] = useState(false)
 
@@ -51,16 +36,9 @@ function Profile(props) {
     )
     const handleSubmit = () => {
         let formdata = new FormData()
-        //console.log(document.getElementById('profile_image'))
         formdata.append('profile_image', document.getElementById('profile_image').files[0])
         formdata.append('cover_image', document.getElementById('cover_image').files[0])
-        axios.post('/profile/uploadImage', formdata, {
-            headers: {
-                'Content-type': 'multipart/form-data'
-            }
-        }).then(
-            dispatch(getProfile)
-        )
+        uploadImage(dispatch)(formdata)
     }
     return (
         

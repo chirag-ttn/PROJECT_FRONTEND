@@ -1,16 +1,14 @@
-import axios from '../../../Api/localhost'
 import { useDispatch } from 'react-redux'
 import './suggestion.css'
-import { Link } from 'react-router-dom'
-import { getProfile } from '../../../redux/actions/Profile'
-import { getPostsPerPage } from '../../../redux/actions/Posts'
+import { addFriend, removeFriend, requestAccept, requestReject, revokeRequest } from '../../../redux/actions/users'
 
 export default function Suggestion(props) {
     const dispatch = useDispatch()
     const AddFriendHandler = () => {
-        axios.get('/users/addFriendRequested', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
-            .then(getProfile(dispatch))
-            .catch(err => console.log(err))
+        addFriend(dispatch)({
+            user_id: props.current_userProfile_id,
+            friend_id: props.other_profile_id
+        })
     }
     const suggestionsBtn = (<>
         <button className="add-f-btn" onClick={AddFriendHandler}><i className='fas fa-plus'></i></button>
@@ -18,25 +16,30 @@ export default function Suggestion(props) {
 
 
     const friendRemoveHandler = () => {
-        axios.get('/users/removeFriend', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
-            .then(getProfile(dispatch))
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
+        removeFriend(dispatch)({
+            user_id: props.current_userProfile_id,
+            friend_id: props.other_profile_id,
+            pageCount: props.pageCount,
+            postCount: props.postCount
+        })
     }
     const FriendBtn = (<>
         <button className="remove-btn" onClick={friendRemoveHandler}><i className='fa fa-times'></i></button>
     </>)
 
     const RequestAcceptHandler = () => {
-        axios.get('/users/addFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
-            .then(getProfile(dispatch))
-            .then(getPostsPerPage(dispatch)(props.pageNumber, props.postCount))
-            .catch(err => console.log(err))
+        requestAccept(dispatch)({
+            user_id: props.current_userProfile_id,
+            friend_id: props.other_profile_id,
+            pageCount: props.pageCount,
+            postCount: props.postCount
+        })
     }
     const RequestRejectHandler = () => {
-        axios.get('/users/rejectFriendResponded', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
-            .then(getProfile(dispatch))
-            .catch(err => console.log(err))
+        requestReject(dispatch)({
+            user_id: props.current_userProfile_id,
+            friend_id: props.other_profile_id,
+        })
     }
     const RequestBtn = (
         <>
@@ -47,9 +50,10 @@ export default function Suggestion(props) {
 
 
     const RevokeRequestHandler = () => {
-        axios.get('/users/revokeRequest', { params: { user_id: props.current_userProfile_id, friend_id: props.other_profile_id } })
-            .then(getProfile(dispatch))
-            .catch(err => console.log(err))
+        revokeRequest(dispatch)({
+            user_id: props.current_userProfile_id,
+            friend_id: props.other_profile_id,
+    })
     }
     const RequestedBtn = (
         <button className="remove-btn" onClick={RevokeRequestHandler}><i className='fa fa-times'></i></button>

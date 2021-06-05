@@ -42,3 +42,38 @@ export const getUserProfile = (dispatch) => {
             .catch(err=> dispatch(getProfileFailure(err)))
     }
 }
+
+export const createProfile = (dispatch)=>{
+    return (history)=>{
+        return (values)=>{
+            axios({
+                method: "post",
+                url: "/profile/createProfile",
+                data: JSON.stringify(values),
+                headers: { "Content-Type": 'application/json' },
+            })
+                .then(function (response) {
+                    getProfile(dispatch)()
+                    history.push('/feeds')
+                })
+                .catch(function (response) {
+                    alert('Error')
+                });
+        }
+    }
+    
+}
+
+export const uploadImage = (dispatch)=>{
+    return (data)=>{
+        
+        axios.post('/profile/uploadImage', data, {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            }
+        }).then(
+            dispatch(getProfile)
+        )
+    }
+
+}
