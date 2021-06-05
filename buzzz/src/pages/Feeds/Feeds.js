@@ -141,8 +141,8 @@ function Feeds() {
                                     
                                     <div class='scroll'>
                                         {/* {post.posts?} */}
-                                        
-                                        {feed.map(val => {
+                                        {console.log(feed)}
+                                        {feed[0]!==null?feed.map(val => {
                                             let { islike, isdislike, isflagged } = reserved_post_state(val)
                                             return <Posts
                                                 key={val._id}
@@ -162,7 +162,7 @@ function Feeds() {
                                                 
                                             />
 
-                                        })}
+                                        }):'No posts found'}
                                         {/* {console.log(feed.length)} */}
                                         {!post.moderatorView?
                                         <div className='load-more'>

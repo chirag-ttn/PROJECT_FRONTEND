@@ -324,7 +324,7 @@ export default function Posts(props) {
     </>
     return (
         <>
-            {props.loading?<Loading />:PostComponent}
+            {PostComponent}
         </>
     )
 }
