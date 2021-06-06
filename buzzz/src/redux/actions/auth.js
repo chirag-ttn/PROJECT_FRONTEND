@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie'
+import { Redirect, useHistory } from 'react-router';
 import axios from '../../Api/localhost'
 
 export const setToken = () => {
@@ -21,8 +22,9 @@ export const setToken = () => {
         auth:auth
     }
 }
-export const removeToken = ()=>{
+export const removeToken = (history)=>{
     localStorage.removeItem('token')
+    
     return{
         type:'REMOVE_TOKEN',
         token:null,
